@@ -115,3 +115,405 @@ conda activate avcs
 ```bash
 npm install
 ```
+
+#### 4. Build the Project
+
+```bash
+# Using Makefile
+make all
+
+# Or manual build
+mkdir -p build && cd build
+cmake ..
+make -j$(nproc)
+```
+
+
+### Using Conda Environment
+
+```bash
+# Create environment
+conda env create -f environment.yml
+
+# Activate environment
+conda activate avcs
+
+# Install the package in development mode
+pip install -e .
+```
+
+## Configuration
+
+### Vehicle Parameters
+
+Edit `config/vehicle_params.yaml` to configure your vehicle specifications:
+
+```yaml
+vehicle:
+  wheelbase: 2.7          # meters
+  max_steering_angle: 0.6 # radians
+  max_speed: 30.0         # m/s
+  max_acceleration: 3.0   # m/s^2
+  width: 1.8              # meters
+  length: 4.5             # meters
+```
+
+### Sensor Configuration
+
+Configure sensors in `config/sensors.yaml`:
+
+```yaml
+lidar:
+  type: "velodyne_vlp16"
+  port: 2368
+  frame_id: "lidar_top"
+  
+camera:
+  - name: "front_center"
+    device: "/dev/video0"
+    resolution: [1920, 1080]
+    
+gps:
+  device: "/dev/ttyUSB0"
+  baudrate: 115200
+```
+
+## Usage
+
+### Launch Full System
+
+```bash
+# Source ROS2 workspace
+source install/setup.bash
+
+# Launch all nodes
+ros2 launch avcs_bringup full_system.launch.py
+
+# Launch with specific configuration
+ros2 launch avcs_bringup full_system.launch.py config:=highway
+```
+
+### Individual Modules
+
+```bash
+# Perception module
+ros2 launch avcs_perception perception.launch.py
+
+# Planning module
+ros2 launch avcs_planning planning.launch.py
+
+# Control module
+ros2 launch avcs_control control.launch.py
+```
+
+### Simulation Mode
+
+```bash
+# Launch CARLA simulation
+ros2 launch avcs_simulation carla.launch.py town:=Town01
+
+# Launch Gazebo simulation
+ros2 launch avcs_simulation gazebo.launch.py world:=city
+```
+
+## API Reference
+
+### Python API
+
+```python
+from avcs.planning import PathPlanner
+from avcs.control import MPCController
+from avcs.perception import ObjectDetector
+
+# Initialize planner
+planner = PathPlanner(config_path="config/planner.yaml")
+
+# Generate path
+path = planner.plan(start_pose, goal_pose, obstacles)
+
+# Initialize controller
+controller = MPCController(vehicle_params)
+control_cmd = controller.compute_control(path, current_state)
+```
+
+### C++ API
+
+```cpp
+#include <avcs/planning/path_planner.hpp>
+#include <avcs/control/mpc_controller.hpp>
+
+// Initialize planner
+avcs::planning::PathPlanner planner("config/planner.yaml");
+
+// Generate path
+auto path = planner.plan(start_pose, goal_pose, obstacles);
+
+// Initialize controller
+avcs::control::MPCController controller(vehicle_params);
+auto control_cmd = controller.computeControl(path, current_state);
+
+## Testing
+
+```bash
+# Run all tests
+make test
+
+# Run specific test suite
+pytest test/perception/ -v
+
+# Run with coverage
+pytest --cov=src test/
+```
+
+## Docker Deployment
+
+```bash
+# Build image
+docker build -t avcs:latest .
+
+# Run container
+docker run -it --rm \
+  --network host \
+  --privileged \
+  -v /dev:/dev \
+  avcs:latest
+
+# Using docker-compose
+docker-compose up -d
+```
+
+## Performance Benchmarks
+
+| Module | Latency (ms) | CPU Usage | GPU Usage |
+|--------|--------------|-----------|-----------|
+| Perception | 50-80 | 45% | 70% |
+| Localization | 20-30 | 25% | 10% |
+| Planning | 30-50 | 30% | 5% |
+| Control | 5-10 | 10% | 0% |
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Code Style
+Connect IM
+
+Markdown
+README.md
+
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+
+### C++ API
+
+```cpp
+#include <avcs/planning/path_planner.hpp>
+#include <avcs/control/mpc_controller.hpp>
+
+// Initialize planner
+avcs::planning::PathPlanner planner("config/planner.yaml");
+
+// Generate path
+auto path = planner.plan(start_pose, goal_pose, obstacles);
+
+// Initialize controller
+avcs::control::MPCController controller(vehicle_params);
+auto control_cmd = controller.computeControl(path, current_state);
+```
+
+## Testing
+
+```bash
+# Run all tests
+make test
+
+# Run specific test suite
+pytest test/perception/ -v
+
+# Run with coverage
+pytest --cov=src test/
+```
+
+## Docker Deployment
+
+```bash
+# Build image
+docker build -t avcs:latest .
+
+# Run container
+docker run -it --rm \
+  --network host \
+  --privileged \
+  -v /dev:/dev \
+  avcs:latest
+
+# Using docker-compose
+docker-compose up -d
+```
+
+## Performance Benchmarks
+
+| Module | Latency (ms) | CPU Usage | GPU Usage |
+|--------|--------------|-----------|-----------|
+| Perception | 50-80 | 45% | 70% |
+| Localization | 20-30 | 25% | 10% |
+| Planning | 30-50 | 30% | 5% |
+| Control | 5-10 | 10% | 0% |
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Code Style
+
+- Python: Follow PEP 8 guidelines, use Black formatter
+- C++: Follow Google C++ Style Guide
+- Use pre-commit hooks for automated formatting
+
+```bash
+# Install pre-commit hooks
+pre-commit install
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- ROS2 Community for the excellent robotics framework
+- CARLA Simulator team for the realistic autonomous driving simulator
+- Apollo Auto project for inspiration on architecture design
+
+## Contact
+
+- **Maintainer**: AVCS Development Team
+- **Email**: avcs@example.com
+- **Documentation**: https://avcs-docs.example.com
+- **Issues**: https://github.com/your-org/autonomous-vehicle-control-system/issues
+
+## Roadmap
+
+- [ ] Support for ROS2 Iron Irwini
+- [ ] Enhanced deep learning perception models
+- [ ] V2X communication module
+- [ ] Multi-vehicle coordination
+- [ ] Web
