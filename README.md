@@ -516,4 +516,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Enhanced deep learning perception models
 - [ ] V2X communication module
 - [ ] Multi-vehicle coordination
-- [ ] Web
+- [ ] Web-based visualization dashboard
+- [ ] Support for additional vehicle platforms
+
+---
+
+**Note**: This software is intended for research and development purposes. Proper safety testing and validation must be conducted before deployment in real-world autonomous vehicle applications.
+
