@@ -1,0 +1,86 @@
+{
+  "name": "autonomous-vehicle-control-system",
+  "version": "0.1.0",
+  "description": "Autonomous Vehicle Control System - Modular autonomous driving software stack",
+  "main": "src/autonomous_core.js",
+  "scripts": {
+    "start": "node src/autonomous_core.js",
+    "dev": "nodemon src/autonomous_core.js",
+    "test": "jest --coverage",
+    "lint": "eslint src/ --ext .js",
+    "format": "prettier --write 'src/**/*.js'",
+    "docs": "jsdoc -c jsdoc.conf.json",
+    "visualize": "node scripts/data_visualizer.js",
+    "scenario": "node scripts/scenario_runner.js",
+    "record": "node scripts/data_recorder.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avcs/autonomous-vehicle-control.git"
+  },
+  "keywords": [
+    "autonomous-driving",
+    "self-driving",
+    "vehicle-control",
+    "adas",
+    "perception",
+    "planning",
+    "control",
+    "v2x",
+    "ros2",
+    "simulation"
+  ],
+  "author": "AVCS Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/avcs/autonomous-vehicle-control/issues"
+  },
+  "homepage": "https://github.com/avcs/autonomous-vehicle-control#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "ws": "^8.14.0",
+    "protobufjs": "^7.2.6",
+    "node-cron": "^3.0.3",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.1",
+    "yargs": "^17.7.2",
+    "axios": "^1.6.0",
+    "roslib": "^1.3.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.51.0",
+    "prettier": "^3.0.3",
+    "nodemon": "^3.0.1",
+    "jsdoc": "^4.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.test.js"
+    ],
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+# =============================================================================
+# Autonomous Vehicle Control System - Dockerfile
+# =============================================================================
+# Multi-stage build for production deployment with GPU support.
+# Stage 1: Build C++ core and Python extensions
+# Stage 2: Runtime image with minimal dependencies
+# =============================================================================
+
+# ---- Stage 1: Builder ----
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    git \
+    gcc-11 \
+    g++-11 \
+    libeigen3-dev \
+    libboost-all-dev \
+    libprotobuf-dev \
+    protobuf-compiler \
+    python3-dev \
+    python3-pip \
+    python3-setuptools \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set GCC 11 as default
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
+
+# Install Python build dependencies
+RUN pip3 install --no-cache-dir \
+    numpy>=1.24.0 \
+    scipy>=1.10.0 \
+    pyyaml>=6.0 \
+    wheel \
+    setuptools
+
+# Copy source and build
+WORKDIR /avcs/build
+COPY CMakeLists.txt /avcs/
+COPY src/ /avcs/src/
+COPY include/ /avcs/include/
+COPY config/ /avcs/config/
+
+RUN cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/avcs/install \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_PYTHON_BINDINGS=ON && \
+    make -j$(nproc) && \
+    make install
+
+# ---- Stage 2: Runtime ----
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 AS runtime
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libeigen3-dev \
+    libprotobuf23 \
+    python3 \
+    python3-pip \
+    libopencv-dev \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    ros-humble-ros-base \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python runtime dependencies
+COPY requirements.txt /avcs/requirements.txt
+RUN pip3 install --no-cache-dir -r /avcs/requirements.txt
+
+# Copy built artifacts from builder
+COPY --from=builder /avcs/install /avcs/install
+COPY --from=builder /avcs/config /avcs/config
+COPY src/ /avcs/src/
+COPY scripts/ /avcs/scripts/
+COPY launch/ /avcs/launch/
+
+# Set up environment
+ENV LD_LIBRARY_PATH=/avcs/install/lib:${LD_LIBRARY_PATH}
+ENV PYTHONPATH=/avcs/src:/avcs/install/lib/python3.10/site-packages:${PYTHONPATH}
+ENV ROS_DOMAIN_ID=42
+
+# Setup entry point
+WORKDIR /avcs
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python3 -c "import avcs; print('healthy')" || exit 1
+
+# Expose ports
+# 2000-2002: CARLA simulation
+# 9090: ROS2 bridge
+# 8080: Web dashboard
+# 5555-5557: V2X DSRC
+EXPOSE 2000-2002 9090 8080 5555-5557
+
+# Default entry point
+ENTRYPOINT ["/avcs/install/bin/avcs_core"]
+CMD ["--config", "/avcs/config/system.yaml", "--mode", "autonomous"]

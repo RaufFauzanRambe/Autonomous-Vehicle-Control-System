@@ -1,0 +1,91 @@
+# =============================================================================
+# Autonomous Vehicle Control System - Conda Environment
+# =============================================================================
+name: avcs
+channels:
+  - conda-forge
+  - defaults
+  - robostack-humble
+dependencies:
+  # ---- System ----
+  - python>=3.10
+  - pip>=23.0
+
+  # ---- C++ Build Tools ----
+  - gcc_linux-64>=11.0
+  - gxx_linux-64>=11.0
+  - cmake>=3.20
+  - make
+  - ninja
+
+  # ---- Core Math ----
+  - numpy>=1.24
+  - scipy>=1.10
+  - eigen>=3.4
+  - blas=*=mkl
+
+  # ---- Computer Vision ----
+  - opencv>=4.8
+  - pillow>=10.0
+  - scikit-image>=0.21
+
+  # ---- Data Processing ----
+  - pandas>=2.0
+  - pyarrow>=12.0
+  - h5py>=3.9
+  - pyyaml>=6.0
+  - toml>=0.10
+
+  # ---- Visualization ----
+  - matplotlib>=3.7
+  - seaborn>=0.12
+  - plotly>=5.15
+
+  # ---- Testing ----
+  - pytest>=7.4
+  - pytest-cov>=4.1
+  - hypothesis>=6.82
+
+  # ---- Code Quality ----
+  - black>=23.7
+  - isort>=5.12
+  - flake8>=6.1
+  - mypy>=1.4
+  - pylint>=2.17
+
+  # ---- ROS2 ----
+  - ros-humble-ros-base
+  - ros-humble-geometry-msgs
+  - ros-humble-sensor-msgs
+  - ros-humble-nav-msgs
+  - ros-humble-tf2-ros
+  - ros-humble-cv-bridge
+  - ros-humble-message-filters
+
+  # ---- Pip Dependencies ----
+  - pip:
+    # Deep Learning
+    - torch>=2.0.0
+    - torchvision>=0.15.0
+    - onnxruntime>=1.15.0
+
+    # Point Cloud
+    - open3d>=0.17.0
+
+    # Planning & Optimization
+    - cvxpy>=1.3.0
+    - osqp>=0.6.3
+
+    # V2X Communication
+    - pycapnp>=1.3.0
+
+    # Simulation
+    - carla>=0.9.15
+    - traci>=1.19.0
+
+    # Utilities
+    - rich>=13.5.0
+    - click>=8.1.0
+    - python-dotenv>=1.0.0
+    - tqdm>=4.65.0
+    - pre-commit>=3.3.0

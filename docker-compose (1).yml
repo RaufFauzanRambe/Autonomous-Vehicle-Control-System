@@ -1,0 +1,150 @@
+# =============================================================================
+# Autonomous Vehicle Control System - Docker Compose
+# =============================================================================
+# Multi-container orchestration for development and simulation.
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # ---- AVCS Core ----
+  avcs-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: avcs:latest
+    container_name: avcs-core
+    restart: unless-stopped
+    network_mode: host
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - ROS_DOMAIN_ID=42
+      - AVCS_CONFIG_PATH=/avcs/config
+      - AVCS_LOG_LEVEL=info
+    volumes:
+      - ./config:/avcs/config:ro
+      - ./data:/avcs/data
+      - ./logs:/avcs/logs
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    ports:
+      - "9090:9090"    # ROS2 bridge
+      - "8080:8080"    # Web dashboard
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import avcs; print('healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ---- CARLA Simulator ----
+  carla-simulator:
+    image: carlasim/carla:0.9.15
+    container_name: carla-sim
+    restart: unless-stopped
+    network_mode: host
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY=${DISPLAY:-:0}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    ports:
+      - "2000-2002:2000-2002"
+    command: >
+      /bin/bash ./CarlaUE4.sh
+      -RenderOffScreen
+      -carla-rpc-port=2000
+      -carla-streaming-port=2001
+      --nosound
+
+  # ---- SUMO Traffic Simulator ----
+  sumo-simulator:
+    image: eclipse/sumo:1.19.0
+    container_name: sumo-sim
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - SUMO_HOME=/usr/share/sumo
+    volumes:
+      - ./config/scenarios:/sumo/config:ro
+      - ./data/sumo:/sumo/data
+    command: >
+      sumo -c /sumo/config/highway_merge.sumocfg
+      --remote-port 4000
+      --num-clients 1
+      --step-length 0.05
+
+  # ---- Redis (Message Bus) ----
+  redis:
+    image: redis:7-alpine
+    container_name: avcs-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb
+
+  # ---- Web Dashboard ----
+  dashboard:
+    image: avcs-dashboard:latest
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: avcs-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - AVCS_API_URL=http://avcs-core:8080
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - avcs-core
+      - redis
+
+  # ---- ROS2 Bridge ----
+  ros2-bridge:
+    image: avcs:latest
+    container_name: ros2-bridge
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - ROS_DOMAIN_ID=42
+    command: >
+      ros2 launch avcs ros2_bridge.launch.py
+    depends_on:
+      - avcs-core
+
+  # ---- Data Recorder ----
+  data-recorder:
+    image: avcs:latest
+    container_name: avcs-recorder
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - ROS_DOMAIN_ID=42
+    volumes:
+      - ./data/recordings:/avcs/recordings
+    command: >
+      python3 /avcs/scripts/data_recorder.py
+      --output /avcs/recordings/session_$(date +%Y%m%d_%H%M%S).bag
+      --topics /avcs/perception /avcs/localization /avcs/planning /avcs/control
+      --rate 10
+
+# ---- Volumes ----
+volumes:
+  redis_data:
+    driver: local
+
+# ---- Networks ----
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
