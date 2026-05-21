@@ -321,16 +321,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - CARLA Simulator team for the realistic autonomous driving simulator
 - Apollo Auto project for inspiration on architecture design
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- ROS2 Community for the excellent robotics framework
-- CARLA Simulator team for the realistic autonomous driving simulator
-- Apollo Auto project for inspiration on architecture design
-
 ## Issues
 - **Issues**: https://github.com/your-org/autonomous-vehicle-control-system/issues
 
