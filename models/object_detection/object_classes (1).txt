@@ -1,0 +1,13 @@
+car
+truck
+bus
+motorcycle
+bicycle
+pedestrian
+traffic_light
+traffic_sign
+stop_sign
+speed_limit
+construction_barrier
+animal
+unknown

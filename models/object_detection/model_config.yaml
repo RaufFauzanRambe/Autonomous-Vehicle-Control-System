@@ -1,0 +1,49 @@
+model_name: yolov8_vehicle_detector
+architecture: YOLOv8n
+input_size:
+- 640
+- 640
+num_classes: 13
+confidence_threshold: 0.25
+nms_threshold: 0.45
+anchors:
+  P3:
+  - - 10
+    - 13
+  - - 16
+    - 30
+  - - 33
+    - 23
+  P4:
+  - - 30
+    - 61
+  - - 62
+    - 45
+  - - 59
+    - 119
+  P5:
+  - - 116
+    - 90
+  - - 156
+    - 198
+  - - 373
+    - 326
+backbone:
+  type: CSPDarknet
+  depth_multiple: 0.33
+  width_multiple: 0.25
+head:
+  type: YOLOv8Head
+  num_layers: 3
+  feature_maps:
+  - 80
+  - 40
+  - 20
+training:
+  lr: 0.01
+  batch_size: 16
+  epochs: 100
+  optimizer: SGD
+  lr_scheduler: CosineAnnealingLR
+  weight_decay: 0.0005
+  momentum: 0.937
