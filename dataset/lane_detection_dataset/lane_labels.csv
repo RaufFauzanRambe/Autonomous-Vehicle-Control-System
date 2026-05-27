@@ -1,0 +1,11 @@
+image,left_lane_x,left_lane_y,right_lane_x,right_lane_y,lane_type
+lane_0001.png,80,120,240,120,solid
+lane_0001.png,75,80,245,80,solid
+lane_0001.png,70,160,250,160,solid
+lane_0001.png,65,200,255,200,solid
+lane_0001.png,82,40,238,40,solid
+lane_0002.png,85,120,235,120,dashed
+lane_0002.png,80,80,240,80,dashed
+lane_0002.png,75,160,245,160,dashed
+lane_0002.png,70,200,250,200,dashed
+lane_0002.png,88,40,232,40,dashed
