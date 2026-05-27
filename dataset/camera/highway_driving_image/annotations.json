@@ -1,0 +1,94 @@
+{
+  "images": [
+    {
+      "id": 1,
+      "file_name": "frame_0001.jpg",
+      "width": 320,
+      "height": 240
+    },
+    {
+      "id": 2,
+      "file_name": "frame_0002.jpg",
+      "width": 320,
+      "height": 240
+    },
+    {
+      "id": 3,
+      "file_name": "frame_0003.jpg",
+      "width": 320,
+      "height": 240
+    }
+  ],
+  "annotations": [
+    {
+      "id": 1,
+      "image_id": 1,
+      "category_id": 1,
+      "bbox": [
+        120,
+        80,
+        80,
+        60
+      ],
+      "area": 4800,
+      "iscrowd": 0
+    },
+    {
+      "id": 2,
+      "image_id": 1,
+      "category_id": 2,
+      "bbox": [
+        50,
+        150,
+        30,
+        50
+      ],
+      "area": 1500,
+      "iscrowd": 0
+    },
+    {
+      "id": 3,
+      "image_id": 2,
+      "category_id": 1,
+      "bbox": [
+        100,
+        90,
+        90,
+        70
+      ],
+      "area": 6300,
+      "iscrowd": 0
+    },
+    {
+      "id": 4,
+      "image_id": 3,
+      "category_id": 3,
+      "bbox": [
+        200,
+        50,
+        40,
+        40
+      ],
+      "area": 1600,
+      "iscrowd": 0
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "vehicle"
+    },
+    {
+      "id": 2,
+      "name": "pedestrian"
+    },
+    {
+      "id": 3,
+      "name": "traffic_sign"
+    },
+    {
+      "id": 4,
+      "name": "cyclist"
+    }
+  ]
+}
