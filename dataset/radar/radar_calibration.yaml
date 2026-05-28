@@ -1,0 +1,21 @@
+sensor_position:
+  x: 3.5
+  y: 0.0
+  z: 0.8
+sensor_orientation:
+  roll: 0.0
+  pitch: 0.0
+  yaw: 0.0
+range_resolution: 0.5        # meters
+angular_resolution: 1.0      # degrees
+max_range: 200.0             # meters
+min_range: 0.5               # meters
+update_rate: 20              # Hz
+field_of_view:
+  azimuth: [-60.0, 60.0]    # degrees
+  elevation: [-10.0, 10.0]  # degrees
+noise_params:
+  range_noise_std: 0.15      # meters
+  angle_noise_std: 0.3       # degrees
+  range_rate_noise_std: 0.1  # m/s
+  rcs_measurement_std: 3.0   # dBsm

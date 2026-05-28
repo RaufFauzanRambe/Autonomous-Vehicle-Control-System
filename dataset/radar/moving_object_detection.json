@@ -1,0 +1,77 @@
+[
+  {
+    "object_id": 1,
+    "position": [
+      45.2,
+      -12.5,
+      0.3
+    ],
+    "velocity": [
+      12.1,
+      2.3
+    ],
+    "rcs": 8.5,
+    "confidence": 0.95,
+    "class": "vehicle"
+  },
+  {
+    "object_id": 2,
+    "position": [
+      82.7,
+      28.1,
+      -0.1
+    ],
+    "velocity": [
+      -7.5,
+      14.2
+    ],
+    "rcs": -3.2,
+    "confidence": 0.88,
+    "class": "vehicle"
+  },
+  {
+    "object_id": 3,
+    "position": [
+      15.3,
+      3.8,
+      0.0
+    ],
+    "velocity": [
+      1.2,
+      -0.5
+    ],
+    "rcs": -10.1,
+    "confidence": 0.72,
+    "class": "pedestrian"
+  },
+  {
+    "object_id": 4,
+    "position": [
+      110.5,
+      -45.0,
+      0.5
+    ],
+    "velocity": [
+      22.0,
+      5.0
+    ],
+    "rcs": 12.3,
+    "confidence": 0.91,
+    "class": "vehicle"
+  },
+  {
+    "object_id": 5,
+    "position": [
+      60.0,
+      10.0,
+      0.2
+    ],
+    "velocity": [
+      0.0,
+      0.0
+    ],
+    "rcs": -5.0,
+    "confidence": 0.65,
+    "class": "static_object"
+  }
+]
