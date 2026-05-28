@@ -1,0 +1,10 @@
+{
+  "0": "road",
+  "1": "sidewalk",
+  "2": "building",
+  "3": "vegetation",
+  "4": "vehicle",
+  "5": "pedestrian",
+  "6": "traffic_sign",
+  "7": "other"
+}

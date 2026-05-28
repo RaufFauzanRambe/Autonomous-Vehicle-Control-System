@@ -1,0 +1,25 @@
+# LiDAR Sensor Calibration
+# Velodyne VLP-16 extrinsic calibration
+
+sensor_to_vehicle_transform:
+  rows: 4
+  cols: 4
+  data:
+    - [1.0, 0.0, 0.0, 0.0]
+    - [0.0, 1.0, 0.0, 0.0]
+    - [0.0, 0.0, 1.0, 1.8]
+    - [0.0, 0.0, 0.0, 1.0]
+
+fov:
+  horizontal: 360.0
+  vertical: 30.0
+
+angular_resolution:
+  horizontal: 0.2
+  vertical: 2.0
+
+range:
+  min: 0.3
+  max: 100.0
+
+rotation_frequency: 10.0
