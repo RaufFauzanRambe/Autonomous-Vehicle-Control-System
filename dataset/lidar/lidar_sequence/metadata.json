@@ -1,0 +1,24 @@
+{
+  "num_scans": 3,
+  "point_format": "x,y,z,intensity",
+  "sensor_info": {
+    "model": "Velodyne VLP-16",
+    "manufacturer": "Velodyne LiDAR",
+    "channels": 16,
+    "points_per_scan": 100,
+    "data_type": "float32",
+    "columns": 4
+  },
+  "timestamp_range": {
+    "start": "2024-01-15T08:30:00.000Z",
+    "end": "2024-01-15T08:30:00.300Z",
+    "frequency_hz": 10.0
+  },
+  "coordinate_frame": {
+    "type": "vehicle_center",
+    "x_axis": "forward",
+    "y_axis": "left",
+    "z_axis": "up",
+    "units": "meters"
+  }
+}
