@@ -1,0 +1,84 @@
+================================================================================
+YOLOv8 Vehicle Detection Model - Training Log
+================================================================================
+Training Session: 2026-01-15_08-31-17
+Configuration: model_config.yaml
+Device: NVIDIA RTX 4090 (CUDA:0)
+Dataset: vehicle_detection_dataset_v3
+================================================================================
+
+[INFO] Resuming from epoch 1 checkpoint
+[INFO] Loading weights: checkpoints/latest_model.pt
+[INFO] Current mAP50-95: 0.341
+[INFO] Best mAP50-95: 0.341
+
+--------------------------------------------------------------------------------
+Epoch 2/300
+--------------------------------------------------------------------------------
+[08:31:17] Epoch 2 started
+[08:31:17] Learning rate: 0.000998
+[08:31:18] DataLoader shuffled with seed: 42
+
+--- Batch Training ---
+
+  Batch   1/803 | Loss: 2.8567 | Box: 1.3234 | Cls: 0.8123 | DFL: 0.7210 | LR: 0.000998 | Speed: 9.3ms
+  Batch   2/803 | Loss: 2.8123 | Box: 1.2989 | Cls: 0.7978 | DFL: 0.7156 | LR: 0.000998 | Speed: 9.3ms
+  Batch   3/803 | Loss: 2.7678 | Box: 1.2765 | Cls: 0.7834 | DFL: 0.7079 | LR: 0.000998 | Speed: 9.2ms
+  Batch   4/803 | Loss: 2.7234 | Box: 1.2543 | Cls: 0.7689 | DFL: 0.7002 | LR: 0.000998 | Speed: 9.2ms
+  Batch   5/803 | Loss: 2.6890 | Box: 1.2345 | Cls: 0.7567 | DFL: 0.6978 | LR: 0.000998 | Speed: 9.2ms
+  Batch  10/803 | Loss: 2.5234 | Box: 1.1678 | Cls: 0.7123 | DFL: 0.6433 | LR: 0.000998 | Speed: 9.1ms
+  Batch  20/803 | Loss: 2.3456 | Box: 1.0890 | Cls: 0.6567 | DFL: 0.5999 | LR: 0.000998 | Speed: 9.0ms
+  Batch  50/803 | Loss: 2.1234 | Box: 0.9978 | Cls: 0.5890 | DFL: 0.5366 | LR: 0.000998 | Speed: 8.9ms
+  Batch 100/803 | Loss: 1.9456 | Box: 0.9234 | Cls: 0.5234 | DFL: 0.4988 | LR: 0.000998 | Speed: 8.8ms
+  Batch 150/803 | Loss: 1.8234 | Box: 0.8789 | Cls: 0.4876 | DFL: 0.4569 | LR: 0.000998 | Speed: 8.7ms
+  Batch 200/803 | Loss: 1.7345 | Box: 0.8456 | Cls: 0.4567 | DFL: 0.4322 | LR: 0.000998 | Speed: 8.7ms
+  Batch 250/803 | Loss: 1.6678 | Box: 0.8123 | Cls: 0.4345 | DFL: 0.4210 | LR: 0.000998 | Speed: 8.6ms
+  Batch 300/803 | Loss: 1.6123 | Box: 0.7890 | Cls: 0.4178 | DFL: 0.4055 | LR: 0.000998 | Speed: 8.6ms
+  Batch 350/803 | Loss: 1.5678 | Box: 0.7678 | Cls: 0.4034 | DFL: 0.3966 | LR: 0.000998 | Speed: 8.6ms
+  Batch 400/803 | Loss: 1.5234 | Box: 0.7456 | Cls: 0.3890 | DFL: 0.3888 | LR: 0.000998 | Speed: 8.6ms
+  Batch 450/803 | Loss: 1.4890 | Box: 0.7289 | Cls: 0.3789 | DFL: 0.3812 | LR: 0.000998 | Speed: 8.6ms
+  Batch 500/803 | Loss: 1.4567 | Box: 0.7123 | Cls: 0.3678 | DFL: 0.3766 | LR: 0.000998 | Speed: 8.5ms
+  Batch 550/803 | Loss: 1.4321 | Box: 0.6989 | Cls: 0.3590 | DFL: 0.3742 | LR: 0.000998 | Speed: 8.5ms
+  Batch 600/803 | Loss: 1.4089 | Box: 0.6867 | Cls: 0.3501 | DFL: 0.3721 | LR: 0.000998 | Speed: 8.5ms
+  Batch 650/803 | Loss: 1.3890 | Box: 0.6756 | Cls: 0.3434 | DFL: 0.3700 | LR: 0.000998 | Speed: 8.5ms
+  Batch 700/803 | Loss: 1.3712 | Box: 0.6656 | Cls: 0.3367 | DFL: 0.3689 | LR: 0.000998 | Speed: 8.5ms
+  Batch 750/803 | Loss: 1.3545 | Box: 0.6567 | Cls: 0.3301 | DFL: 0.3677 | LR: 0.000998 | Speed: 8.5ms
+  Batch 800/803 | Loss: 1.3389 | Box: 0.6489 | Cls: 0.3234 | DFL: 0.3666 | LR: 0.000998 | Speed: 8.5ms
+  Batch 803/803 | Loss: 1.3378 | Box: 0.6482 | Cls: 0.3228 | DFL: 0.3668 | LR: 0.000998 | Speed: 8.5ms
+
+--- Epoch 2 Training Summary ---
+  Train Loss: 1.3378
+  Train Box Loss: 0.6482
+  Train Cls Loss: 0.3228
+  Train DFL Loss: 0.3668
+  Epoch Time: 68.3s
+  GPU Memory: 18.2 GB / 24.0 GB
+  Loss improvement: -54.0% from epoch 1
+
+--- Validation ---
+
+[08:32:26] Running validation on 3,212 images...
+  Class        | Images | Instances | P     | R     | mAP50 | mAP50-95
+  -------------|--------|-----------|-------|-------|-------|--------
+  car          |   3212 |     4521  | 0.712 | 0.678 | 0.701 | 0.467
+  truck        |   3212 |      876  | 0.667 | 0.623 | 0.656 | 0.423
+  bus          |   3212 |      234  | 0.634 | 0.589 | 0.612 | 0.389
+  motorcycle   |   3212 |      567  | 0.601 | 0.556 | 0.589 | 0.345
+  bicycle      |   3212 |      345  | 0.578 | 0.534 | 0.567 | 0.323
+  pedestrian   |   3212 |     2345  | 0.689 | 0.645 | 0.678 | 0.434
+  cyclist      |   3212 |      432  | 0.623 | 0.578 | 0.601 | 0.356
+  traffic_sign |   3212 |     1876  | 0.745 | 0.712 | 0.734 | 0.512
+  traffic_light|   3212 |      987  | 0.723 | 0.689 | 0.712 | 0.489
+  -------------|--------|-----------|-------|-------|-------|--------
+  ALL          |   3212 |    12283  | 0.663 | 0.622 | 0.650 | 0.415
+
+--- Epoch 2 Complete ---
+  Best mAP50-95: 0.415 (IMPROVED - saved to checkpoints/best_model.pt)
+  mAP improvement: +21.7% from epoch 1
+  Learning rate: 0.000998 -> 0.000994
+  Early stopping patience: 50 epochs (counter: 0)
+  Next epoch starting...
+
+================================================================================
+End of Epoch 2 Log
+================================================================================
