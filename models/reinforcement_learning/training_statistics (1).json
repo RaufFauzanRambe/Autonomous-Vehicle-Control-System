@@ -1,0 +1,17 @@
+{
+  "total_episodes": 1000,
+  "total_steps": 500000,
+  "best_reward": 285.7,
+  "mean_reward_last_100": 231.4,
+  "training_time_hours": 48.3,
+  "hyperparameters": {
+    "lr": 0.0003,
+    "gamma": 0.99,
+    "epsilon_start": 1.0,
+    "epsilon_end": 0.01,
+    "epsilon_decay": 0.995,
+    "batch_size": 64,
+    "buffer_size": 100000,
+    "target_update_freq": 1000
+  }
+}
