@@ -1,0 +1,265 @@
+# Adaptive Control Module Configuration
+# Autonomous Vehicle Control System
+#
+# This configuration file defines adaptive control parameters, learning
+# rates, adaptation bounds, gain schedule tables, and fuzzy rule
+# configurations for the adaptive vehicle control module.
+
+# ============================================================================
+# General Adaptive Control Parameters
+# ============================================================================
+adaptive_control:
+  # Model Reference Adaptive Control (MRAC)
+  mrac:
+    state_dim: 4                    # State dimension
+    input_dim: 2                    # Input dimension
+    gamma: 1.0                      # Adaptation gain (learning rate)
+    sigma: 0.01                     # e-modification parameter
+    gamma_proj: 10.0                # Projection operator bound
+    adaptation_limit: 100.0         # Maximum parameter magnitude
+    reference_model_bw: 5.0         # Reference model bandwidth (rad/s)
+    reference_model_damping: 0.9    # Reference model damping ratio
+
+  # L1 Adaptive Control
+  l1_adaptive:
+    state_dim: 4                    # State dimension
+    input_dim: 2                    # Input dimension
+    adaptation_gain: 100.0          # Fast adaptation gain Γ
+    filter_cutoff: 10.0             # Low-pass filter cutoff (Hz)
+    prediction_timeout: 0.05        # Predictor update timeout (s)
+
+  # Composite Adaptive Control
+  composite_adaptive:
+    gamma_tracking: 1.0             # Tracking error adaptation gain
+    gamma_prediction: 5.0           # Prediction error adaptation gain
+    blending_factor: 0.7            # Weight for tracking vs prediction
+
+# ============================================================================
+# Adaptive Tuning Parameters
+# ============================================================================
+adaptive_tuning:
+  # Gradient-based Adaptation
+  gradient:
+    n_params: 4                     # Number of tunable parameters
+    learning_rate: 0.01             # Base learning rate γ
+    min_learning_rate: 1.0e-5       # Minimum learning rate
+    max_learning_rate: 1.0          # Maximum learning rate
+    decay_rate: 0.9999              # Learning rate exponential decay
+    momentum_coeff: 0.9             # Momentum coefficient
+    projection_bound: 50.0          # Parameter norm bound
+
+  # MIT Rule Adaptation
+  mit_rule:
+    adaptation_gain: 0.5            # MIT rule gain γ
+    sigma: 0.01                     # e-modification parameter
+    projection_bound: 50.0          # Parameter norm bound
+    parameter_bounds:
+      kp: [0.0, 5.0]               # Proportional gain bounds
+      ki: [0.0, 2.0]               # Integral gain bounds
+      kd: [0.0, 1.0]               # Derivative gain bounds
+
+  # Lyapunov-Based Adaptation
+  lyapunov:
+    state_dim: 2                    # Tracking error state dimension
+    n_params: 4                     # Number of adaptive parameters
+    adaptation_gain: 2.0            # Lyapunov gain Γ
+    sigma: 0.01                     # σ-modification parameter
+    projection_bound: 50.0          # Parameter norm bound
+    stability_threshold: -1.0e-3    # V_dot threshold for instability alert
+
+  # Bounded Adaptation
+  bounded:
+    max_adaptation_rate: 0.1        # Maximum ‖Δθ‖ per step
+    freeze_threshold: 5.0           # Error norm to freeze adaptation
+    unfreeze_threshold: 1.0         # Error norm to unfreeze adaptation
+
+# ============================================================================
+# System Identification Parameters
+# ============================================================================
+system_identification:
+  # Recursive Least Squares
+  rls:
+    forgetting_factor: 0.995        # λ ∈ (0, 1], 1.0 = no forgetting
+    initial_covariance: 1000.0      # P₀ diagonal value
+    covariance_floor: 1.0e-6        # Minimum eigenvalue for P
+    excitation_threshold: 1.0e-4    # Minimum excitation level
+
+  # Extended Least Squares (ARMAX)
+  els:
+    na: 2                           # A-polynomial order
+    nb: 2                           # B-polynomial order
+    nc: 1                           # C-polynomial order
+    nk: 1                           # Input delay (samples)
+    forgetting_factor: 0.995
+
+  # Model Order Selection
+  model_order:
+    na_range: [1, 2, 3, 4]          # A-polynomial orders to test
+    nb_range: [1, 2, 3, 4]          # B-polynomial orders to test
+    nk_range: [1, 2]                # Delay orders to test
+    criterion: "BIC"                 # AIC or BIC (BIC more conservative)
+
+  # Convergence Monitoring
+  convergence:
+    window_size: 100                # Rolling window for statistics
+    convergence_threshold: 1.0e-4   # ‖Δθ‖ convergence threshold
+    divergence_threshold: 10.0      # Error threshold for divergence alert
+    low_excitation_threshold: 1.0e-6 # φᵀPφ threshold
+
+# ============================================================================
+# Gain Schedule Tables
+# ============================================================================
+gain_scheduling:
+  # Speed-based steering gain schedule
+  speed_steering:
+    description: "Lateral control gains scheduled by vehicle speed"
+    breakpoints_mps: [0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0]
+    kp: [1.5, 1.3, 1.1, 1.0, 0.85, 0.7, 0.6, 0.5]
+    ki: [0.02, 0.02, 0.015, 0.01, 0.008, 0.006, 0.005, 0.004]
+    kd: [0.3, 0.25, 0.2, 0.15, 0.12, 0.1, 0.08, 0.06]
+    smooth_transition: true         # Use Hermite interpolation
+    transition_smoothing: 0.5       # Low-pass filter time constant (s)
+
+  # Load-based gain schedule
+  load_compensation:
+    description: "Gain adjustment for payload/trailer weight"
+    breakpoints_kg: [0.0, 200.0, 400.0, 600.0, 800.0, 1000.0]
+    kp_factor: [1.0, 1.1, 1.2, 1.3, 1.4, 1.5]
+    ki_factor: [1.0, 1.05, 1.1, 1.15, 1.2, 1.25]
+    kd_factor: [1.0, 1.05, 1.1, 1.15, 1.2, 1.25]
+
+  # Combined speed-load schedule (2D)
+  speed_load_combined:
+    description: "2D gain interpolation by speed and load"
+    speed_breakpoints_mps: [0.0, 10.0, 20.0, 30.0]
+    load_breakpoints_kg: [0.0, 500.0, 1000.0]
+    kp_grid:
+      - [1.5, 1.7, 1.9]
+      - [1.0, 1.2, 1.4]
+      - [0.7, 0.85, 1.0]
+      - [0.5, 0.6, 0.7]
+    ki_grid:
+      - [0.02, 0.025, 0.03]
+      - [0.01, 0.012, 0.015]
+      - [0.008, 0.01, 0.012]
+      - [0.005, 0.006, 0.008]
+    kd_grid:
+      - [0.3, 0.35, 0.4]
+      - [0.15, 0.18, 0.2]
+      - [0.1, 0.12, 0.14]
+      - [0.06, 0.07, 0.08]
+
+# ============================================================================
+# Fuzzy Controller Configurations
+# ============================================================================
+fuzzy_control:
+  # Steering fuzzy controller
+  steering:
+    description: "Fuzzy logic steering correction from lateral and heading error"
+    defuzzification_method: "centroid"  # centroid, bisector, mean_of_maxima
+    resolution: 200                     # Grid points for defuzzification
+    output_gain: 1.0                    # Multiplicative gain on output
+    input_variables:
+      lateral_error:
+        universe_min: -3.0
+        universe_max: 3.0
+        terms: ["NB", "NS", "ZE", "PS", "PB"]
+      heading_error:
+        universe_min: -0.5
+        universe_max: 0.5
+        terms: ["NB", "NS", "ZE", "PS", "PB"]
+    output_variables:
+      steering_correction:
+        universe_min: -0.15
+        universe_max: 0.15
+        terms: ["NB", "NS", "ZE", "PS", "PB"]
+
+  # Speed fuzzy controller
+  speed:
+    description: "Fuzzy logic throttle/brake adjustment from speed and acceleration error"
+    defuzzification_method: "centroid"
+    resolution: 200
+    output_gain: 1.0
+    input_variables:
+      speed_error:
+        universe_min: -10.0
+        universe_max: 10.0
+        terms: ["NB", "NS", "ZE", "PS", "PB"]
+      acceleration_error:
+        universe_min: -3.0
+        universe_max: 3.0
+        terms: ["N", "ZE", "P"]
+    output_variables:
+      throttle_adjustment:
+        universe_min: -1.0
+        universe_max: 1.0
+        terms: ["NB", "NS", "ZE", "PS", "PB"]
+
+# ============================================================================
+# Neural Controller Parameters
+# ============================================================================
+neural_control:
+  ddpg:
+    state_dim: 6                     # State dimension
+    action_dim: 2                    # Action dimension (steer, throttle)
+    actor_lr: 1.0e-4                 # Actor learning rate
+    critic_lr: 1.0e-3                # Critic learning rate
+    gamma: 0.99                      # Discount factor
+    tau: 0.001                       # Target network soft update rate
+    buffer_size: 100000              # Replay buffer capacity
+    batch_size: 64                   # Training batch size
+    ou_mu: 0.0                       # OU noise mean
+    ou_theta: 0.15                   # OU noise mean reversion rate
+    ou_sigma: 0.2                    # OU noise volatility
+    hidden_dims: [128, 64]           # Hidden layer sizes
+    action_min: [-0.6, -3.0]         # Min action (steer rad, accel m/s²)
+    action_max: [0.6, 3.0]           # Max action
+
+  neural_pid:
+    adaptation_rate: 0.01            # NN gain adjustment rate
+    max_gain_adjustment: 2.0         # Maximum gain adjustment factor
+
+# ============================================================================
+# Stability Monitoring
+# ============================================================================
+stability_monitoring:
+  window_size: 200                   # Rolling window for analysis
+  lyapunov_increase_tolerance: 0.1   # Allowed V increase fraction
+  drift_rate_threshold: 1.0          # Max parameter drift rate
+  oscillation_freq_min_hz: 2.0       # Min oscillation frequency
+  oscillation_freq_max_hz: 50.0      # Max oscillation frequency
+
+# ============================================================================
+# Vehicle Parameters
+# ============================================================================
+vehicle:
+  mass: 1800.0                       # Vehicle mass (kg)
+  mass_min: 1500.0                   # Minimum mass (no payload)
+  mass_max: 2800.0                   # Maximum mass (full payload)
+  wheelbase: 2.85                    # Wheelbase (m)
+  cg_to_front: 1.42                  # CG to front axle (m)
+  cg_to_rear: 1.43                   # CG to rear axle (m)
+  yaw_inertia: 3500.0                # Yaw moment of inertia (kg·m²)
+  frontal_area: 2.5                  # Frontal area (m²)
+  drag_coefficient: 0.3              # Drag coefficient
+  rolling_resistance: 0.015          # Rolling resistance coefficient
+  max_steer_angle_deg: 35.0          # Maximum steering angle
+
+# ============================================================================
+# Timing
+# ============================================================================
+timing:
+  dt: 0.01                           # Controller timestep (s)
+  control_freq: 100.0                # Control loop frequency (Hz)
+  identification_freq: 50.0          # System identification frequency (Hz)
+  tuning_freq: 10.0                  # Adaptive tuning frequency (Hz)
+
+# ============================================================================
+# Diagnostics
+# ============================================================================
+diagnostics:
+  enable_logging: true
+  log_rate_hz: 10.0                  # Logging rate (Hz)
+  max_log_duration_s: 3600.0         # Maximum log duration (s)
+  log_parameter_history: true        # Log parameter evolution
+  log_lyapunov_values: true          # Log Lyapunov function values
