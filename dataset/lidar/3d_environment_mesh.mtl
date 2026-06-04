@@ -1,0 +1,352 @@
+# Material Library - 3D Environment Mesh
+# Autonomous Vehicle Control System Simulation
+# Materials defined for urban environment rendering
+
+# ============================================================
+# Ground and Terrain Materials
+# ============================================================
+newmtl ground_material
+Ka 0.100 0.150 0.100
+Kd 0.200 0.300 0.150
+Ks 0.000 0.000 0.000
+Ns 1.0
+d 1.0
+illum 1
+
+newmtl asphalt_road
+Ka 0.050 0.050 0.050
+Kd 0.150 0.150 0.160
+Ks 0.020 0.020 0.020
+Ns 5.0
+d 1.0
+illum 2
+
+newmtl intersection_road
+Ka 0.060 0.060 0.060
+Kd 0.160 0.160 0.170
+Ks 0.020 0.020 0.020
+Ns 5.0
+d 1.0
+illum 2
+
+newmtl parking_asphalt
+Ka 0.050 0.050 0.050
+Kd 0.140 0.140 0.150
+Ks 0.010 0.010 0.010
+Ns 3.0
+d 1.0
+illum 2
+
+# ============================================================
+# Lane Marking Materials
+# ============================================================
+newmtl lane_marking_white
+Ka 0.400 0.400 0.400
+Kd 0.850 0.850 0.830
+Ks 0.100 0.100 0.100
+Ns 20.0
+d 1.0
+illum 2
+
+newmtl lane_marking_yellow
+Ka 0.300 0.250 0.050
+Kd 0.850 0.750 0.100
+Ks 0.050 0.050 0.010
+Ns 15.0
+d 1.0
+illum 2
+
+# ============================================================
+# Sidewalk and Curb Materials
+# ============================================================
+newmtl sidewalk_concrete
+Ka 0.200 0.200 0.200
+Kd 0.600 0.580 0.550
+Ks 0.020 0.020 0.020
+Ns 5.0
+d 1.0
+illum 2
+
+newmtl curb_stone
+Ka 0.150 0.150 0.150
+Kd 0.500 0.490 0.470
+Ks 0.010 0.010 0.010
+Ns 3.0
+d 1.0
+illum 2
+
+# ============================================================
+# Building Materials
+# ============================================================
+newmtl building_glass
+Ka 0.050 0.080 0.120
+Kd 0.300 0.500 0.700
+Ks 0.500 0.500 0.600
+Ns 100.0
+d 0.85
+illum 5
+
+newmtl building_concrete
+Ka 0.150 0.150 0.140
+Kd 0.550 0.530 0.510
+Ks 0.010 0.010 0.010
+Ns 2.0
+d 1.0
+illum 1
+
+newmtl building_brick
+Ka 0.150 0.080 0.050
+Kd 0.600 0.300 0.200
+Ks 0.010 0.010 0.010
+Ns 3.0
+d 1.0
+illum 1
+
+newmtl building_facade_modern
+Ka 0.080 0.080 0.100
+Kd 0.400 0.400 0.450
+Ks 0.150 0.150 0.180
+Ns 30.0
+d 1.0
+illum 2
+
+newmtl building_glass_steel
+Ka 0.040 0.070 0.110
+Kd 0.350 0.550 0.750
+Ks 0.600 0.600 0.700
+Ns 150.0
+d 0.80
+illum 5
+
+newmtl building_roof
+Ka 0.080 0.080 0.080
+Kd 0.300 0.280 0.260
+Ks 0.010 0.010 0.010
+Ns 2.0
+d 1.0
+illum 1
+
+newmtl building_roof_tile
+Ka 0.150 0.060 0.040
+Kd 0.550 0.250 0.150
+Ks 0.020 0.010 0.010
+Ns 5.0
+d 1.0
+illum 1
+
+newmtl building_roof_metal
+Ka 0.100 0.100 0.100
+Kd 0.450 0.450 0.470
+Ks 0.300 0.300 0.320
+Ns 60.0
+d 1.0
+illum 3
+
+newmtl building_residential
+Ka 0.150 0.120 0.080
+Kd 0.650 0.550 0.400
+Ks 0.010 0.010 0.010
+Ns 3.0
+d 1.0
+illum 1
+
+newmtl building_modern_glass
+Ka 0.030 0.060 0.100
+Kd 0.250 0.450 0.700
+Ks 0.700 0.700 0.800
+Ns 200.0
+d 0.75
+illum 5
+
+newmtl building_commercial
+Ka 0.080 0.080 0.100
+Kd 0.450 0.440 0.500
+Ks 0.100 0.100 0.120
+Ns 25.0
+d 1.0
+illum 2
+
+newmtl building_warehouse
+Ka 0.100 0.100 0.090
+Kd 0.500 0.480 0.450
+Ks 0.010 0.010 0.010
+Ns 2.0
+d 1.0
+illum 1
+
+# ============================================================
+# Tree and Vegetation Materials
+# ============================================================
+newmtl tree_trunk
+Ka 0.080 0.040 0.020
+Kd 0.350 0.200 0.100
+Ks 0.010 0.010 0.010
+Ns 2.0
+d 1.0
+illum 1
+
+newmtl tree_foliage
+Ka 0.020 0.080 0.020
+Kd 0.150 0.450 0.120
+Ks 0.010 0.020 0.010
+Ns 5.0
+d 1.0
+illum 1
+
+# ============================================================
+# Metal Materials
+# ============================================================
+newmtl metal_dark
+Ka 0.050 0.050 0.050
+Kd 0.200 0.200 0.220
+Ks 0.400 0.400 0.450
+Ns 80.0
+d 1.0
+illum 3
+
+newmtl metal_galvanized
+Ka 0.100 0.100 0.100
+Kd 0.600 0.600 0.620
+Ks 0.500 0.500 0.520
+Ns 100.0
+d 1.0
+illum 3
+
+newmtl metal_grate
+Ka 0.050 0.050 0.050
+Kd 0.250 0.250 0.260
+Ks 0.300 0.300 0.320
+Ns 50.0
+d 1.0
+illum 3
+
+newmtl bollard_steel
+Ka 0.060 0.060 0.060
+Kd 0.300 0.300 0.320
+Ks 0.400 0.400 0.430
+Ns 70.0
+d 1.0
+illum 3
+
+# ============================================================
+# Traffic Light Materials
+# ============================================================
+newmtl traffic_light_red
+Ka 0.300 0.050 0.050
+Kd 0.850 0.100 0.100
+Ks 0.200 0.050 0.050
+Ns 30.0
+d 1.0
+illum 2
+
+newmtl traffic_light_yellow
+Ka 0.300 0.250 0.050
+Kd 0.900 0.800 0.100
+Ks 0.200 0.180 0.050
+Ns 30.0
+d 1.0
+illum 2
+
+newmtl traffic_light_green
+Ka 0.050 0.200 0.050
+Kd 0.100 0.750 0.150
+Ks 0.050 0.200 0.050
+Ns 30.0
+d 1.0
+illum 2
+
+# ============================================================
+# Traffic Sign Materials
+# ============================================================
+newmtl sign_stop_red
+Ka 0.250 0.030 0.030
+Kd 0.800 0.080 0.080
+Ks 0.100 0.020 0.020
+Ns 20.0
+d 1.0
+illum 2
+
+newmtl sign_speed_limit
+Ka 0.200 0.200 0.200
+Kd 0.900 0.900 0.850
+Ks 0.100 0.100 0.100
+Ns 25.0
+d 1.0
+illum 2
+
+# ============================================================
+# Infrastructure Materials
+# ============================================================
+newmtl bus_shelter
+Ka 0.050 0.050 0.060
+Kd 0.300 0.300 0.350
+Ks 0.200 0.200 0.230
+Ns 40.0
+d 0.70
+illum 5
+
+newmtl bus_shelter_roof
+Ka 0.030 0.030 0.040
+Kd 0.200 0.200 0.250
+Ks 0.300 0.300 0.350
+Ns 50.0
+d 0.60
+illum 5
+
+newmtl street_lamp
+Ka 0.300 0.280 0.200
+Kd 0.900 0.880 0.700
+Ks 0.400 0.380 0.300
+Ns 40.0
+d 1.0
+illum 2
+
+newmtl fire_hydrant_red
+Ka 0.200 0.030 0.030
+Kd 0.750 0.100 0.080
+Ks 0.100 0.020 0.020
+Ns 15.0
+d 1.0
+illum 2
+
+# ============================================================
+# Barrier and Safety Materials
+# ============================================================
+newmtl barrier_construction
+Ka 0.200 0.150 0.020
+Kd 0.800 0.600 0.050
+Ks 0.050 0.040 0.010
+Ns 10.0
+d 1.0
+illum 2
+
+newmtl barrier_stripe
+Ka 0.050 0.050 0.050
+Kd 0.100 0.100 0.100
+Ks 0.010 0.010 0.010
+Ns 2.0
+d 1.0
+illum 1
+
+# ============================================================
+# Furniture and Miscellaneous Materials
+# ============================================================
+newmtl bench_wood
+Ka 0.100 0.060 0.030
+Kd 0.450 0.300 0.150
+Ks 0.020 0.015 0.010
+Ns 8.0
+d 1.0
+illum 2
+
+newmtl waste_bin_green
+Ka 0.030 0.080 0.030
+Kd 0.120 0.400 0.150
+Ks 0.020 0.050 0.020
+Ns 10.0
+d 1.0
+illum 2
+
+# ============================================================
+# End of Material Library
+# ============================================================
