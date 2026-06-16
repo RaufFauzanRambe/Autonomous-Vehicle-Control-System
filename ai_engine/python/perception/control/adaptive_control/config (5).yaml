@@ -1,0 +1,500 @@
+# =============================================================================
+# Semantic Segmentation Configuration for Autonomous Vehicle Perception
+# =============================================================================
+# Configuration file for training, evaluation, and inference of semantic
+# segmentation models on autonomous driving datasets (Cityscapes, KITTI).
+#
+# Author: Autonomous Vehicle Control System Team
+# License: MIT
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Model Architecture
+# ---------------------------------------------------------------------------
+model:
+  # Architecture type: "deeplabv3plus", "unet", "hrnet"
+  architecture: "deeplabv3plus"
+
+  # Number of segmentation classes (Cityscapes default: 19)
+  num_classes: 19
+
+  # Input image size [height, width]
+  input_size: [512, 1024]
+
+  # Output size (defaults to input_size if not specified)
+  output_size: [512, 1024]
+
+  # Encoder (backbone) configuration
+  encoder:
+    # Backbone type: resnet50, resnet101, resnext101_32x8d, efficientnet_b4,
+    #                efficientnet_b7, swin_base_patch4_window7_224,
+    #                mobilenet_v3_large, convnext_base
+    backbone: "resnet101"
+    pretrained: true              # Use ImageNet pretrained weights
+    freeze_bn: false              # Freeze batch normalization layers
+    freeze_stages: 1              # Freeze early encoder stages (0=none, 4=all)
+    output_stride: 16             # Encoder output stride (8 or 16)
+    normalization: "batch"        # batch, group, layer, instance, sync_batch
+    activation: "relu"            # relu, relu6, gelu, swish, mish, leaky_relu, hard_swish
+    in_channels: 3                # Input channels (3 for RGB)
+    drop_path_rate: 0.2           # Stochastic depth rate
+
+  # Decoder configuration
+  decoder:
+    decoder_channels: [256, 128, 64, 32]   # Channel sizes per decoder stage
+    atrous_rates: [1, 6, 12, 18]           # ASPP dilation rates
+    use_aspp: true                          # Use Atrous Spatial Pyramid Pooling
+    use_attention: true                     # Use attention gates in skip connections
+    attention_type: "cbam"                  # cbam, se, eca, self
+    upsample_mode: "bilinear"               # bilinear, nearest, pixel_shuffle
+    use_skip: true                          # Use skip connections from encoder
+    low_level_channels: 48                  # Channels from low-level encoder features
+
+  # Skip connection configuration
+  skip:
+    enabled: true                 # Enable skip connections
+    connection_type: "concat"     # add, concat, attention
+    num_skips: 4                  # Number of skip connections (1-4)
+    projection_channels: 48       # 1x1 projection channels before concat
+    apply_bn: true                # Apply batch normalization after projection
+    apply_relu: true              # Apply ReLU after projection
+
+  # Deep supervision
+  use_deep_supervision: false
+  deep_supervision_weights: [0.4, 0.3, 0.2, 0.1]
+
+  # Dropout rate before final classification head
+  dropout_rate: 0.1
+
+# ---------------------------------------------------------------------------
+# Training Hyperparameters
+# ---------------------------------------------------------------------------
+training:
+  # Random seed for reproducibility
+  seed: 42
+
+  # Number of training epochs
+  epochs: 200
+
+  # Batch sizes
+  batch_size: 4
+  val_batch_size: 2
+  test_batch_size: 1
+
+  # Optimizer
+  optimizer:
+    type: "sgd"                   # sgd, adam, adamw, rmsprop
+    learning_rate: 0.01           # Initial learning rate
+    weight_decay: 0.0001          # L2 regularization
+    momentum: 0.9                 # SGD momentum
+    # Adam-specific
+    beta1: 0.9
+    beta2: 0.999
+    eps: 1.0e-8
+    # RMSprop-specific
+    rms_alpha: 0.99
+
+  # Learning rate scheduler
+  scheduler:
+    type: "poly"                  # poly, cosine, step, multistep, warmup_cosine
+    # Poly scheduler params
+    power: 0.9
+    # Cosine annealing params
+    t_max: 200                    # Max iterations for cosine
+    eta_min: 1.0e-6               # Minimum learning rate
+    # Step scheduler params
+    step_size: 30
+    gamma: 0.1
+    # MultiStep scheduler params
+    milestones: [60, 120, 160]
+    # Warmup params (used with warmup_cosine)
+    warmup_epochs: 5
+    warmup_start_lr: 1.0e-6
+
+  # Loss function
+  loss:
+    type: "ce_dice"               # ce, dice, focal, ce_dice, ce_focal
+    # Cross-entropy params
+    class_weights: "median_freq"  # none, inverse_freq, sqrt_inverse_freq,
+                                  # median_freq, effective_num, focal, custom
+    ignore_label: 255             # Label to ignore in loss
+    label_smoothing: 0.0          # Label smoothing factor [0, 1]
+    # Dice loss params
+    dice_weight: 0.5              # Weight for dice loss in combined loss
+    dice_smooth: 1.0              # Smoothing factor for dice coefficient
+    dice_square_denominator: true # Square denominator in dice
+    # Focal loss params
+    focal_gamma: 2.0              # Focusing parameter
+    focal_alpha: 0.25             # Balancing parameter
+    # OHEM (Online Hard Example Mining)
+    use_ohem: false
+    ohem_threshold: 0.7           # Ratio of hard examples to keep
+    ohem_min_pixels: 1024         # Minimum number of hard pixels
+    # Auxiliary loss
+    use_aux_loss: true
+    aux_loss_weight: 0.4
+
+  # Mixed precision training
+  use_amp: false                  # Automatic Mixed Precision (FP16)
+  amp_grad_scale_init: 65536.0
+
+  # Gradient clipping
+  grad_clip_norm: 1.0             # Max gradient norm (0 to disable)
+  grad_clip_value: 0.0            # Max gradient value (0 to disable)
+
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 20                  # Epochs without improvement before stopping
+    min_delta: 0.0001             # Minimum change to qualify as improvement
+    monitor: "val_miou"           # Metric to monitor: val_loss, val_miou, val_pixel_acc
+
+  # Checkpoint saving
+  checkpointing:
+    save_dir: "checkpoints"       # Directory for saving checkpoints
+    save_best: true               # Save best model
+    save_last: true               # Save last model
+    save_frequency: 5             # Save every N epochs
+    best_metric: "val_miou"       # Metric for best model selection
+    best_mode: "max"              # max or min (max for miou, min for loss)
+    max_keep: 5                   # Maximum number of checkpoints to keep
+
+  # TensorBoard logging
+  tensorboard:
+    enabled: true
+    log_dir: "runs/segmentation"
+    log_frequency: 10             # Log every N batches
+    log_images: true              # Log sample images
+    log_images_frequency: 100     # Log images every N batches
+    max_log_images: 4             # Max number of images per log
+
+# ---------------------------------------------------------------------------
+# Dataset Configuration
+# ---------------------------------------------------------------------------
+dataset:
+  # Dataset type: cityscapes, kitti, kitti_road, custom, synthia, bdd100k
+  type: "cityscapes"
+
+  # Root directories for each dataset
+  paths:
+    cityscapes: "/data/cityscapes"
+    kittti: "/data/kitti"
+    kitti_road: "/data/kitti_road"
+    custom: "/data/custom_segmentation"
+    synthia: "/data/synthia"
+    bdd100k: "/data/bdd100k"
+
+  # Splits
+  train_split: "train"
+  val_split: "val"
+  test_split: "test"
+
+  # Cityscapes-specific settings
+  cityscapes:
+    use_coarse: false             # Include coarse annotations
+    fine_suffix: "gtFine"
+    coarse_suffix: "gtCoarse"
+    label_suffix: "labelTrainIds"
+
+  # Number of data loading workers
+  num_workers: 4
+
+  # Image normalization (ImageNet defaults)
+  normalize:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
+  # Cache images in memory (requires sufficient RAM)
+  cache_images: false
+
+  # Maximum samples for debugging (-1 = all)
+  max_samples: -1
+
+# ---------------------------------------------------------------------------
+# Data Augmentation
+# ---------------------------------------------------------------------------
+augmentation:
+  # Enable augmentation during training
+  enabled: true
+
+  # Geometric augmentations
+  geometric:
+    # Random horizontal flip
+    random_flip_h: true
+    flip_prob: 0.5
+
+    # Random scale and crop
+    random_scale_crop: true
+    scale_range: [0.5, 2.0]      # Min and max scale factors
+    crop_size: [512, 1024]        # Target crop size [H, W]
+
+    # Random rotation
+    random_rotation: false
+    rotation_range: 10.0          # Max rotation in degrees
+
+    # Random affine
+    random_affine: false
+    affine_degrees: 10
+    affine_translate: 0.1
+    affine_scale: [0.9, 1.1]
+    affine_shear: 5
+
+    # Padding
+    pad_mode: "constant"          # constant, reflect, edge, symmetric
+    pad_value: 0
+    pad_to_multiple: 32
+
+  # Photometric augmentations
+  photometric:
+    # Color jitter
+    color_jitter: true
+    brightness: 0.3               # Brightness jitter factor
+    contrast: 0.3                 # Contrast jitter factor
+    saturation: 0.3               # Saturation jitter factor
+    hue: 0.02                     # Hue jitter factor
+
+    # Random grayscale
+    random_grayscale: false
+    grayscale_prob: 0.1
+
+    # Gaussian blur
+    gaussian_blur: false
+    blur_kernel_range: [3, 7]
+    blur_prob: 0.1
+
+    # Gaussian noise
+    gaussian_noise: false
+    noise_std: 0.01
+
+    # Cutout regularization
+    cutout: false
+    cutout_size: 32
+    cutout_prob: 0.1
+
+# ---------------------------------------------------------------------------
+# Cityscapes Class Definitions (19 classes)
+# ---------------------------------------------------------------------------
+classes:
+  - id: 0
+    name: "road"
+    category: "flat"
+    color: [128, 64, 128]
+    evaluate: true
+  - id: 1
+    name: "sidewalk"
+    category: "flat"
+    color: [244, 35, 232]
+    evaluate: true
+  - id: 2
+    name: "building"
+    category: "construction"
+    color: [70, 70, 70]
+    evaluate: true
+  - id: 3
+    name: "wall"
+    category: "construction"
+    color: [102, 102, 156]
+    evaluate: true
+  - id: 4
+    name: "fence"
+    category: "construction"
+    color: [190, 153, 153]
+    evaluate: true
+  - id: 5
+    name: "pole"
+    category: "object"
+    color: [153, 153, 153]
+    evaluate: true
+  - id: 6
+    name: "traffic_light"
+    category: "object"
+    color: [250, 170, 30]
+    evaluate: true
+  - id: 7
+    name: "traffic_sign"
+    category: "object"
+    color: [220, 220, 0]
+    evaluate: true
+  - id: 8
+    name: "vegetation"
+    category: "nature"
+    color: [107, 142, 35]
+    evaluate: true
+  - id: 9
+    name: "terrain"
+    category: "nature"
+    color: [152, 251, 152]
+    evaluate: true
+  - id: 10
+    name: "sky"
+    category: "sky"
+    color: [70, 130, 180]
+    evaluate: true
+  - id: 11
+    name: "person"
+    category: "human"
+    color: [220, 20, 60]
+    evaluate: true
+  - id: 12
+    name: "rider"
+    category: "human"
+    color: [255, 0, 0]
+    evaluate: true
+  - id: 13
+    name: "car"
+    category: "vehicle"
+    color: [0, 0, 142]
+    evaluate: true
+  - id: 14
+    name: "truck"
+    category: "vehicle"
+    color: [0, 0, 70]
+    evaluate: true
+  - id: 15
+    name: "bus"
+    category: "vehicle"
+    color: [0, 60, 100]
+    evaluate: true
+  - id: 16
+    name: "train"
+    category: "vehicle"
+    color: [0, 80, 100]
+    evaluate: true
+  - id: 17
+    name: "motorcycle"
+    category: "vehicle"
+    color: [0, 0, 230]
+    evaluate: true
+  - id: 18
+    name: "bicycle"
+    category: "vehicle"
+    color: [119, 11, 32]
+    evaluate: true
+
+# ---------------------------------------------------------------------------
+# Evaluation Configuration
+# ---------------------------------------------------------------------------
+evaluation:
+  # Metrics to compute
+  metrics:
+    - "miou"                      # Mean Intersection over Union
+    - "pixel_accuracy"            # Global pixel accuracy
+    - "mean_pixel_accuracy"       # Mean per-class pixel accuracy
+    - "mean_dice"                 # Mean Dice coefficient
+    - "frequency_weighted_iou"    # Frequency-weighted IoU
+    - "boundary_f1"               # Boundary F1 score
+    - "kappa"                     # Cohen's Kappa
+
+  # Boundary F1 tolerance (pixels)
+  boundary_tolerance: 2
+
+  # Ignore label in evaluation
+  ignore_label: 255
+
+  # Per-class evaluation
+  per_class_metrics: true
+
+  # Generate visualization samples
+  visualize: true
+  num_vis_samples: 10             # Number of samples to visualize
+  vis_output_dir: "eval_results"
+
+  # Generate JSON report
+  generate_report: true
+  report_path: "eval_results/evaluation_report.json"
+
+  # Confusion matrix
+  compute_confusion_matrix: true
+
+# ---------------------------------------------------------------------------
+# Post-Processing Configuration
+# ---------------------------------------------------------------------------
+postprocessing:
+  # CRF refinement
+  use_crf: false
+  crf_iterations: 5
+  crf_bilateral_weight: 5.0
+  crf_spatial_sigma: 3.0
+  crf_color_sigma: 10.0
+
+  # Morphological operations
+  use_morphology: true
+  morph_operation: "close_open"   # close, open, close_open, open_close
+  morph_kernel_size: 5
+  morph_iterations: 1
+
+  # Hole filling
+  fill_holes: true
+
+  # Small region removal
+  remove_small_regions: true
+  min_region_area: 256
+
+  # Boundary smoothing
+  smooth_boundaries: false
+  boundary_smooth_iterations: 1
+
+  # Confidence filtering
+  use_confidence_filter: false
+  confidence_threshold: 0.5
+
+# ---------------------------------------------------------------------------
+# Inference Configuration
+# ---------------------------------------------------------------------------
+inference:
+  # Model checkpoint path (for evaluation/inference)
+  checkpoint_path: ""
+
+  # Test-time augmentation
+  use_tta: false
+  tta_transforms:
+    - "original"
+    - "flip_horizontal"
+    # - "flip_vertical"
+    # - "scale_0.5"
+    # - "scale_1.5"
+
+  # Multi-scale inference
+  use_multiscale: false
+  scales: [0.5, 0.75, 1.0, 1.25, 1.5]
+
+  # Output format
+  output_format: "mask"           # mask, probabilities, logits
+  save_probabilities: false
+  save_logits: false
+
+  # Sliding window for large images
+  use_sliding_window: false
+  window_size: [512, 512]
+  window_overlap: 0.25
+
+# ---------------------------------------------------------------------------
+# Hardware Configuration
+# ---------------------------------------------------------------------------
+hardware:
+  # Device: cpu, cuda, cuda:0, cuda:1, etc.
+  device: "cuda"
+
+  # Data parallel training
+  use_data_parallel: false
+  gpu_ids: [0]
+
+  # Distributed training
+  use_distributed: false
+  world_size: 1
+  rank: 0
+  dist_url: "tcp://localhost:29500"
+  dist_backend: "nccl"
+
+  # Benchmark mode (CUDNN)
+  cudnn_benchmark: true
+
+# ---------------------------------------------------------------------------
+# Logging Configuration
+# ---------------------------------------------------------------------------
+logging:
+  level: "INFO"                   # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_file: "segmentation.log"
+  log_to_console: true
+  log_to_file: true
