@@ -1,0 +1,61 @@
+# =============================================================================
+# File: requirements.txt
+# Brief: Python dependencies for the NVIDIA Jetson platform of the
+#        Autonomous Vehicle Control System.
+# Author: AV Control System Team
+# Date: 2025
+# License: MIT
+# =============================================================================
+#
+# IMPORTANT — aarch64 / L4T specific notes:
+#   * `torch` and `torchvision` are NOT installed from PyPI on Jetson.
+#     Use NVIDIA's pre-built wheels for JetPack 5.x:
+#       pip3 install \
+#         https://nvidia.box.com/shared/static/.../torch-2.0.0-cp310-cp310-linux_aarch64.whl
+#     The Dockerfile in this directory handles that automatically.
+#   * `tensorrt` Python bindings ship with JetPack and live in
+#       /usr/lib/python3.10/dist-packages/tensorrt/
+#     Add that path to PYTHONPATH if pip doesn't find them.
+#   * `opencv-python-headless` is preferred over `opencv-python` on headless
+#     Jetson deployments (no GUI/X11).
+# ----------------------------------------------------------------------------
+
+# --- Numerics ----------------------------------------------------------------
+numpy>=1.23,<2.0          # pin <2.0 until all TRT 8.x bindings are compatible
+scipy>=1.9
+scikit-learn>=1.2
+pandas>=1.5
+
+# --- Deep learning -----------------------------------------------------------
+# torch + torchvision installed via NVIDIA Jetson wheels (see Dockerfile).
+torch>=2.0.0
+torchvision>=0.15.0
+onnx>=1.13
+onnxruntime-gpu>=1.15      # optional, falls back to TRT path
+
+# --- TensorRT + GPU ----------------------------------------------------------
+tensorrt>=8.5              # uses the bindings shipped with JetPack
+pycuda>=2022.1             # CUDA Python interop, needed by some TRT samples
+
+# --- Image / video -----------------------------------------------------------
+opencv-python-headless>=4.6
+Pillow>=9.4
+
+# --- ROS2 / messaging --------------------------------------------------------
+# rclpy ships with the ROS2 apt install (ros-humble-desktop or ros-humble-ros-base).
+# Listed here only so pip freeze can detect a missing install.
+paho-mqtt>=1.6             # for non-ROS telemetry bridge
+protobuf>=3.20
+
+# --- Config / logging --------------------------------------------------------
+pyyaml>=6.0
+loguru>=0.7
+tqdm>=4.64
+
+# --- Telemetry / monitoring --------------------------------------------------
+jetson-stats>=4.0          # jtop, GPU/EMC/power metrics
+psutil>=5.9
+
+# --- Test / dev --------------------------------------------------------------
+pytest>=7.2
+pytest-cov>=4.0
