@@ -1,0 +1,151 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Main Street",
+        "type": "primary",
+        "speed_limit": 50,
+        "lanes": 4
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.42,
+            37.775
+          ],
+          [
+            -122.418,
+            37.776
+          ],
+          [
+            -122.415,
+            37.777
+          ],
+          [
+            -122.412,
+            37.778
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oak Avenue",
+        "type": "secondary",
+        "speed_limit": 40,
+        "lanes": 2
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.425,
+            37.773
+          ],
+          [
+            -122.422,
+            37.774
+          ],
+          [
+            -122.42,
+            37.775
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Elm Boulevard",
+        "type": "tertiary",
+        "speed_limit": 30,
+        "lanes": 2
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.418,
+            37.772
+          ],
+          [
+            -122.418,
+            37.774
+          ],
+          [
+            -122.418,
+            37.776
+          ],
+          [
+            -122.418,
+            37.778
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Highway 101",
+        "type": "motorway",
+        "speed_limit": 100,
+        "lanes": 6
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.43,
+            37.77
+          ],
+          [
+            -122.425,
+            37.771
+          ],
+          [
+            -122.42,
+            37.772
+          ],
+          [
+            -122.415,
+            37.773
+          ],
+          [
+            -122.41,
+            37.774
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pine Lane",
+        "type": "residential",
+        "speed_limit": 25,
+        "lanes": 1
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -122.422,
+            37.775
+          ],
+          [
+            -122.422,
+            37.777
+          ],
+          [
+            -122.422,
+            37.779
+          ]
+        ]
+      }
+    }
+  ]
+}
