@@ -1,0 +1,187 @@
+# docker-compose.yml
+# File:        docker-compose.yml
+# Brief:       Multi-service stack for the Raspberry Pi platform. Brings up
+#              ROS 2, an MQTT broker, an inference server, and a telemetry
+#              dashboard. Designed for Pi 4 (4 GB+) and Pi 5 (8 GB).
+# Author:      Autonomous Vehicle Team
+# Date:        2025-01-30
+# License:     MIT
+
+version: "3.9"
+
+# ----------------------------------------------------------------------
+# Shared networks
+# ----------------------------------------------------------------------
+networks:
+  av_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24
+
+# ----------------------------------------------------------------------
+# Shared volumes
+# ----------------------------------------------------------------------
+volumes:
+  ros2_ws:
+    driver: local
+  mosquitto_data:
+    driver: local
+  mosquitto_log:
+    driver: local
+  inference_models:
+    driver: local
+  dashboard_logs:
+    driver: local
+
+# ----------------------------------------------------------------------
+# Services
+# ----------------------------------------------------------------------
+services:
+
+  # ---- ROS 2 humble bringup ----------------------------------------
+  ros2:
+    image: autonomousvehicle/ros2-humble:latest
+    container_name: av_ros2
+    restart: unless-stopped
+    networks:
+      - av_net
+    devices:
+      - /dev/i2c-1:/dev/i2c-1
+      - /dev/spidev0.0:/dev/spidev0.0
+      - /dev/spidev0.1:/dev/spidev0.1
+      - /dev/ttyAMA0:/dev/ttyAMA0
+      - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/gpiomem:/dev/gpiomem
+    device_cgroup_rules:
+      - 'c 89:* mrw'    # i2c
+      - 'c 153:* mrw'   # spi
+      - 'c 166:* mrw'   # tty
+    volumes:
+      - ros2_ws:/ros2_ws
+      - ./config:/config:ro
+      - /run/udev:/run/udev:ro
+      - /dev/shm:/dev/shm
+    environment:
+      - ROS_DOMAIN_ID=42
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=/config/cyclonedds.xml
+      - VEHICLE_ID=av-01
+      - MQTT_HOST=mosquitto
+      - PYTHONUNBUFFERED=1
+    command: >
+      bash -lc "
+      source /opt/ros/humble/setup.bash &&
+      source /ros2_ws/install/setup.bash &&
+      ros2 launch av_bringup launch.py vehicle_id:=$$VEHICLE_ID
+      "
+    depends_on:
+      - mosquitto
+    privileged: false
+    cap_add:
+      - SYS_NICE
+      - IPC_LOCK
+    ulimits:
+      rtprio: 99
+      memlock: -1
+    healthcheck:
+      test: ["CMD", "ros2", "topic", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ---- Mosquitto MQTT broker --------------------------------------
+  mosquitto:
+    image: eclipse-mosquitto:2.0.18
+    container_name: av_mosquitto
+    restart: unless-stopped
+    networks:
+      - av_net
+    ports:
+      - "1883:1883"
+      - "9001:9001"      # websockets
+    volumes:
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./config/mosquitto.passwd:/mosquitto/config/mosquitto.passwd:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -t '$$SYS/#' -C 1 -i healthcheck -W 5"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ---- Inference server (TensorRT/Triton) -------------------------
+  inference-server:
+    image: nvcr.io/nvidia/tritonserver:23.12-py3
+    container_name: av_inference
+    profiles: ["jetson"]    # only enabled with --profile jetson
+    restart: unless-stopped
+    networks:
+      - av_net
+    ports:
+      - "8000:8000"     # HTTP
+      - "8001:8001"     # gRPC
+      - "8002:8002"     # metrics
+    volumes:
+      - inference_models:/models:ro
+    command: >
+      tritonserver --model-repository=/models
+                   --strict-model-config=false
+                   --log-verbose=1
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # ---- Telemetry dashboard ----------------------------------------
+  telemetry-dashboard:
+    image: autonomousvehicle/telemetry-dashboard:latest
+    container_name: av_dashboard
+    restart: unless-stopped
+    networks:
+      - av_net
+    ports:
+      - "8080:8080"
+    volumes:
+      - dashboard_logs:/var/log/dashboard
+      - ./config/dashboard.yaml:/etc/dashboard/config.yaml:ro
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - VEHICLE_ID=av-01
+      - LOG_LEVEL=INFO
+    command: >
+      gunicorn -w 2 -b 0.0.0.0:8080
+               --access-logfile /var/log/dashboard/access.log
+               --error-logfile /var/log/dashboard/error.log
+               dashboard.app:app
+    depends_on:
+      - mosquitto
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ---- Watchtower: auto-pull new images on push -------------------
+  watchtower:
+    image: containrrr/watchtower:1.6.0
+    container_name: av_watchtower
+    restart: unless-stopped
+    networks:
+      - av_net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=86400    # 1 day
+      - WATCHTOWER_NOTIFICATIONS_LEVEL=info
+    command: --interval 86400 av_dashboard av_ros2

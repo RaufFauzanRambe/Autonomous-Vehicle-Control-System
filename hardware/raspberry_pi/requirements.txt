@@ -1,0 +1,69 @@
+# requirements.txt
+# File:        requirements.txt
+# Brief:       Python dependencies for the Raspberry Pi platform of the
+#              Autonomous Vehicle Control System.
+# Author:      Autonomous Vehicle Team
+# Date:        2025-01-30
+# License:     MIT
+#
+# Install with:
+#   python3 -m venv --system-site-packages venv
+#   source venv/bin/activate
+#   pip install --upgrade pip
+#   pip install -r requirements.txt
+#
+# NOTE: `picamera2`, `RPi.GPIO`, `gpiozero` and `python-can` are pinned
+# because newer versions sometimes break on 32-bit/64-bit kernel mismatches.
+# Use `--system-site-packages` so the apt-installed `picamera2` is reused.
+
+# ---------- Computer vision & numeric ----------
+opencv-python==4.9.0.80
+numpy==1.26.4
+scipy==1.11.4
+scikit-learn==1.4.0
+matplotlib==3.8.3
+pillow==10.2.0
+
+# ---------- Camera & image acquisition ----------
+picamera2==0.3.12
+pyav==12.0.0
+
+# ---------- GPIO & hardware abstraction ----------
+RPi.GPIO==0.7.1
+gpiozero==2.0.1
+adafruit-blinka==8.34.0
+adafruit-circuitpython-pca9685==3.4.13
+adafruit-circuitpython-bno055==5.4.10
+adafruit-circuitpython-gps==3.11.18
+adafruit-circuitpython-motor==3.4.6
+libgpiod==2.1.3
+
+# ---------- Messaging & networking ----------
+paho-mqtt==2.0.0
+pyserial==3.5
+gpsd-py3==0.3.0
+python-can==4.3.1
+scapy==2.5.0
+websockets==12.0
+
+# ---------- Configuration & validation ----------
+pyyaml==6.0.1
+pydantic==2.6.1
+tomli==2.0.1; python_version < "3.11"
+python-dotenv==1.0.1
+
+# ---------- Logging & monitoring ----------
+loguru==0.7.2
+rich==13.7.1
+psutil==5.9.8
+
+# ---------- Web dashboard ----------
+flask==3.0.2
+flask-socketio==5.3.6
+eventlet==0.35.2
+
+# ---------- Testing ----------
+pytest==8.0.0
+pytest-asyncio==0.23.5
+pytest-cov==4.1.0
+pytest-mock==3.12.0
