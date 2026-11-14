@@ -1,0 +1,8 @@
+{
+  "duration_s": 20.0,
+  "dt_s": 0.1,
+  "n_readings": 100,
+  "lidar_points_last_scan": 120,
+  "radar_target_count": 2,
+  "camera_detections_total": 200
+}
