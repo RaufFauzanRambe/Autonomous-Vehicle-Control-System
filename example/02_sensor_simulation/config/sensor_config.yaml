@@ -1,0 +1,32 @@
+# Sensor configuration for 02_sensor_simulation.
+# Relative paths are resolved against the module directory (02_sensor_simulation/).
+simulation:
+  duration_s: 20.0        # [s] total simulated time, typical 5-60
+  dt_s: 0.1               # [s] integration step, typical 0.01-0.1
+  ego_speed_mps: 8.0      # [m/s] straight-line ego speed, typical 2-20
+logging:
+  record_every_n_steps: 10  # [-] JSONL logging stride
+camera:
+  image_width_px: 1280    # [px] typical 640-1920
+  image_height_px: 720    # [px] typical 360-1080
+  fov_deg: 90.0           # [deg] horizontal field of view, typical 60-120
+  max_detection_range_m: 80.0  # [m] typical 30-150
+  detection_noise_std_px: 3.0  # [px] bbox jitter
+lidar:
+  channels: 16            # [-] scanning channels, typical 4-128
+  points_per_scan: 120    # [-] points per scan, typical 60-720
+  min_range_m: 1.0        # [m] typical 0.5-2
+  max_range_m: 100.0      # [m] typical 30-200
+  range_noise_std_m: 0.02 # [m] typical 0.01-0.05
+radar:
+  max_range_m: 200.0      # [m] typical 150-300
+  fov_deg: 70.0           # [deg] typical 60-120
+  range_noise_std_m: 0.1  # [m] typical 0.05-0.5
+gps:
+  position_noise_std_m: 1.5   # [m] typical 0.5-5
+  frame_id: "gps_antenna"
+imu:
+  accel_noise_std_mpss: 0.05  # [m/s^2] typical 0.01-0.1
+  gyro_noise_std_radps: 0.005 # [rad/s] typical 0.001-0.01
+  bias_ax_mpss: 0.1           # [m/s^2] constant accelerometer bias, typical 0-0.3
+  frame_id: "imu_body"
