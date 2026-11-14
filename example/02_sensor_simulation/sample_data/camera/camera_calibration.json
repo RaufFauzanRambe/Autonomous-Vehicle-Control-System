@@ -1,0 +1,34 @@
+{
+  "camera_model": "pinhole",
+  "image_size_px": [
+    640,
+    480
+  ],
+  "intrinsics": {
+    "fx_px": 320.0,
+    "fy_px": 320.0,
+    "cx_px": 320.0,
+    "cy_px": 240.0
+  },
+  "distortion_coeffs": [
+    0.0,
+    -0.02,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "projection_model": "u = cx - fx*(Y/X), v = cy + fy*((h_cam - Z)/X); X = forward distance [m], Y = left offset [m], Z = height [m], h_cam = 1.5 m",
+  "extrinsics": {
+    "position_m": [
+      0.0,
+      0.0,
+      1.5
+    ],
+    "rotation_rpy_rad": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "calibration_target": "synthetic checkerboard; ideal pinhole (zero reprojection error by construction)"
+}

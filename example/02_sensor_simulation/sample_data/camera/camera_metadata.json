@@ -1,0 +1,53 @@
+{
+  "device_id": "cam_front_sim",
+  "sensor_model": "synthetic pinhole camera",
+  "image_width_px": 640,
+  "image_height_px": 480,
+  "fps_hz": 10.0,
+  "fov_deg": 90.0,
+  "mount": {
+    "position_m": [
+      0.0,
+      0.0,
+      1.5
+    ],
+    "rotation_rpy_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "frame": "vehicle body: x forward, y left, z up"
+  },
+  "frame_count": 4,
+  "frames": [
+    {
+      "frame_id": "frame_000001",
+      "file": "images/frame_000001.jpg",
+      "timestamp_s": 0.0
+    },
+    {
+      "frame_id": "frame_000002",
+      "file": "images/frame_000002.jpg",
+      "timestamp_s": 0.1
+    },
+    {
+      "frame_id": "frame_000003",
+      "file": "images/frame_000003.jpg",
+      "timestamp_s": 0.2
+    },
+    {
+      "frame_id": "frame_000004",
+      "file": "images/frame_000004.jpg",
+      "timestamp_s": 0.3
+    }
+  ],
+  "annotations": {
+    "available_for": [
+      "frame_000001",
+      "frame_000002",
+      "frame_000003"
+    ],
+    "note": "frame_000004 is intentionally unannotated to exercise missing-label handling"
+  },
+  "coordinate_convention": "timestamps in [s] from scenario start; image origin top-left"
+}
