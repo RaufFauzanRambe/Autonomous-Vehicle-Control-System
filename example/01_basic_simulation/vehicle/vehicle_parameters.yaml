@@ -1,0 +1,10 @@
+# Vehicle parameter file for the kinematic bicycle model (01_basic_simulation).
+# Relative paths are resolved against the module directory (01_basic_simulation/),
+# i.e. this file is loaded as vehicle/vehicle_parameters.yaml by main.py.
+wheelbase_m: 2.7          # [m] distance between front and rear axle, typical 2.5-3.5
+max_steering_rad: 0.6     # [rad] maximum front wheel angle, typical 0.4-0.7
+max_speed_mps: 33.0       # [m/s] top vehicle speed, typical 25-55
+max_accel_mpss: 3.0       # [m/s^2] peak acceleration at throttle = 1, typical 2-5
+max_decel_mpss: 8.0       # [m/s^2] peak deceleration at throttle = -1, typical 6-10
+drag_coefficient: 0.02    # [1/s] linear speed drag gain, typical 0.01-0.05
+mass_kg: 1500.0           # [kg] vehicle curb mass, typical 1200-2000
