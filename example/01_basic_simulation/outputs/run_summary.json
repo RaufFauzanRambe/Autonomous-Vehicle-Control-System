@@ -1,0 +1,9 @@
+{
+  "duration_s": 20.0,
+  "dt_s": 0.05,
+  "n_steps": 400,
+  "distance_m": 293.9182302770174,
+  "final_speed_mps": 23.139775169629292,
+  "mean_speed_mps": 14.6717321833924,
+  "off_road_steps": 0
+}
