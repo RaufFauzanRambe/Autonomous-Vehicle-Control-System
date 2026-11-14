@@ -1,0 +1,15 @@
+# Simulation configuration for 01_basic_simulation.
+# Relative paths are resolved against the module directory (01_basic_simulation/).
+simulation:
+  duration_s: 20.0     # [s] total simulated time, typical 5-60
+  dt_s: 0.05           # [s] integration step, typical 0.01-0.1
+initial_state:
+  x: 0.0               # [m] start pose world frame
+  y: 0.0               # [m]
+  yaw: 0.0             # [rad]
+  speed: 5.0           # [m/s]
+controls:              # open-loop constant inputs for this demo
+  throttle: 0.4        # [-] normalized input, -1..1, negative = braking
+  steering_angle: 0.0  # [rad] front wheel angle
+logging:
+  record_every_n_steps: 1   # [-] state recording stride
