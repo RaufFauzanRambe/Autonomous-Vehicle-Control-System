@@ -1,0 +1,69 @@
+{
+  "frame_id": "frame_000001",
+  "image_file": "images/frame_000001.jpg",
+  "timestamp_s": 0.0,
+  "image_size_px": [
+    640,
+    480
+  ],
+  "coordinate_convention": "bbox_px = [x_min, y_min, x_max, y_max], origin top-left, [px]",
+  "annotation_source": "synthetic ground truth: 3-D box models projected with the shipped calibration",
+  "objects": [
+    {
+      "class": "car",
+      "track_id": 1,
+      "bbox_px": [
+        274,
+        240,
+        300,
+        257
+      ],
+      "world_center_m": [
+        30.0,
+        3.0,
+        0.75
+      ],
+      "world_size_m": [
+        4.5,
+        2.0,
+        1.5
+      ]
+    },
+    {
+      "class": "traffic_sign",
+      "track_id": 2,
+      "sign_type": "stop",
+      "bbox_px": [
+        238,
+        229,
+        248,
+        239
+      ],
+      "world_center_m": [
+        25.0,
+        6.0,
+        2.0
+      ]
+    },
+    {
+      "class": "barrier",
+      "track_id": 3,
+      "bbox_px": [
+        326,
+        239,
+        338,
+        249
+      ],
+      "world_center_m": [
+        55.0,
+        -2.0,
+        0.8
+      ],
+      "world_size_m": [
+        2.0,
+        2.0,
+        1.6
+      ]
+    }
+  ]
+}
