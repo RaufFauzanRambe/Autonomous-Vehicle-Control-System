@@ -1,0 +1,95 @@
+{
+  "device_id": "lidar_top_sim",
+  "sensor_model": "16-channel synthetic scanning lidar",
+  "rate_hz": 10.0,
+  "points_per_scan_typical": 3058,
+  "range_min_m": 1.0,
+  "range_max_m": 80.0,
+  "mount": {
+    "position_m": [
+      0.0,
+      0.0,
+      1.8
+    ],
+    "rotation_rpy_rad": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "point_fields": [
+    "x",
+    "y",
+    "z",
+    "intensity"
+  ],
+  "coordinate_frame": "sensor frame: x forward, y left, z up; origin at the sensor mount (ground plane at z = -1.8 m)",
+  "scans": [
+    {
+      "frame_id": "frame_000001",
+      "file": "point_clouds/frame_000001.pcd",
+      "timestamp_s": 0.0,
+      "n_points": 3058
+    },
+    {
+      "frame_id": "frame_000002",
+      "file": "point_clouds/frame_000002.pcd",
+      "timestamp_s": 0.1,
+      "n_points": 3058
+    },
+    {
+      "frame_id": "frame_000003",
+      "file": "point_clouds/frame_000003.pcd",
+      "timestamp_s": 0.2,
+      "n_points": 3058
+    }
+  ],
+  "scene": {
+    "static_obstacles": [
+      {
+        "cluster_id": 1,
+        "type": "vehicle",
+        "center_m": [
+          30.0,
+          3.0,
+          0.75
+        ],
+        "size_m": [
+          4.5,
+          2.0,
+          1.5
+        ]
+      },
+      {
+        "cluster_id": 2,
+        "type": "barrier",
+        "center_m": [
+          55.0,
+          -2.0,
+          0.8
+        ],
+        "size_m": [
+          2.0,
+          2.0,
+          1.6
+        ]
+      },
+      {
+        "cluster_id": 3,
+        "type": "sign_pole",
+        "center_m": [
+          25.0,
+          6.0,
+          1.1
+        ],
+        "size_m": [
+          0.2,
+          0.2,
+          2.2
+        ]
+      }
+    ],
+    "clutter": "two unclustered point blobs (cluster_id 0) represent vegetation noise"
+  },
+  "processing_note": "processed/ CSVs: ground removal keeps points with height_above_ground_m > 0.15; obstacle_points.csv keeps clustered points (cluster_id >= 1) regardless of height"
+}

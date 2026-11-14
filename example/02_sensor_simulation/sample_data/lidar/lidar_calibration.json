@@ -1,0 +1,17 @@
+{
+  "device_id": "lidar_top_sim",
+  "mount_position_m": [
+    0.0,
+    0.0,
+    1.8
+  ],
+  "mount_rotation_rpy_rad": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "time_offset_s": 0.0,
+  "range_accuracy_std_m": 0.02,
+  "beam_divergence_m_at_50m": 0.05,
+  "calibration_method": "synthetic exact mounting (no extrinsic error by construction)"
+}
