@@ -1,0 +1,7 @@
+{
+  "map_name": "straight_test_track",
+  "units": "m",
+  "road_segments": [
+    {"id": "seg_00", "start": [0.0, 0.0], "end": [400.0, 0.0], "width_m": 7.0, "speed_limit_mps": 20.0}
+  ]
+}
