@@ -1,0 +1,42 @@
+{
+  "decisions": [
+    {
+      "id": "free_flow_cruise",
+      "action": "cruise",
+      "reason": "No signals, pedestrians or slower leads within operational limits; cruising at 14.0 m/s",
+      "target_speed_mps": 14.0,
+      "confidence": 0.8,
+      "expected_decision": "cruise",
+      "matches_expected": true
+    },
+    {
+      "id": "red_light_stop",
+      "action": "stop",
+      "reason": "Red traffic light 15.0 m ahead (required deceleration 3.33 m/s^2 vs comfortable limit 3.00 m/s^2)",
+      "target_speed_mps": 0.0,
+      "confidence": 0.95,
+      "expected_decision": "stop",
+      "matches_expected": true
+    },
+    {
+      "id": "pedestrian_crossing",
+      "action": "stop",
+      "reason": "Occupied pedestrian crossing 10.0 m ahead",
+      "target_speed_mps": 0.0,
+      "confidence": 0.9,
+      "expected_decision": "stop",
+      "matches_expected": true
+    },
+    {
+      "id": "slow_lead_vehicle",
+      "action": "follow",
+      "reason": "Vehicle veh_1 20.0 m ahead within desired headway 24.0 m (ttc 3.3 s; advisory ttc stop threshold 4.0 s), matching its 6.0 m/s",
+      "target_speed_mps": 6.0,
+      "confidence": 0.85,
+      "expected_decision": "follow",
+      "matches_expected": true
+    }
+  ],
+  "n_matches": 4,
+  "n_scenarios": 4
+}
