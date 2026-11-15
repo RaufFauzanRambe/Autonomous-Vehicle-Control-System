@@ -1,0 +1,20 @@
+# Relative paths are resolved against the module directory (03_perception_demo/).
+camera:
+  width_px: 640     # [px] synthetic frame width, typical 640-1920
+  height_px: 480    # [px] synthetic frame height, typical 480-1080
+  fps: 30           # [Hz] acquisition rate
+preprocessing:
+  gaussian_kernel_px: 5    # [px] odd kernel size, typical 3-9
+  canny_low: 50            # [-] hysteresis low threshold, typical 20-80
+  canny_high: 150          # [-] hysteresis high threshold, typical 80-200
+lane_detection:
+  hough_threshold: 80      # [-] minimum Hough votes, typical 40-120
+  min_line_length_px: 40   # [px] typical 20-100
+  max_line_gap_px: 20      # [px] typical 10-40
+  roi_top_ratio: 0.55      # [-] fraction of image height where ROI starts, typical 0.4-0.7
+object_detection:
+  min_area_px: 200         # [px^2] minimum contour area, typical 100-1000
+  confidence_threshold: 0.5  # [-] minimum detection confidence
+traffic_sign:
+  red_ratio: 1.3           # [-] red-channel dominance vs G/B for stop sign
+  blue_ratio: 1.3          # [-] blue-channel dominance for info sign
