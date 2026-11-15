@@ -1,0 +1,28 @@
+{
+  "plans": [
+    {
+      "map": "simple_road_map",
+      "start_node": "n0",
+      "goal_node": "n7",
+      "n_nodes_in_map": 8,
+      "n_nodes_in_path": 8,
+      "path_length_m": 351.98,
+      "n_waypoints": 72,
+      "straightness_ratio": 0.9944,
+      "nodes_expanded": 8,
+      "unreachable": false
+    },
+    {
+      "map": "intersection_map",
+      "start_node": "n_south",
+      "goal_node": "n_east",
+      "n_nodes_in_map": 5,
+      "n_nodes_in_path": 3,
+      "path_length_m": 200.0,
+      "n_waypoints": 41,
+      "straightness_ratio": 0.7071,
+      "nodes_expanded": 3,
+      "unreachable": false
+    }
+  ]
+}
