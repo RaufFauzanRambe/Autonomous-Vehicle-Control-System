@@ -1,0 +1,10 @@
+# Relative paths are resolved against the module directory (04_localization_demo/).
+gps:
+  low_pass_alpha: 0.6       # [-] 0..1, higher trusts the new measurement more
+imu:
+  accel_bias_mpss: 0.1      # [m/s^2] known bias removed before integration
+  gyro_bias_radps: 0.002    # [rad/s] known bias removed before integration
+fusion:
+  complementary_alpha: 0.95 # [-] weight on IMU dead reckoning, 0..1
+evaluation:
+  metrics: ["gps_rmse_m", "fused_rmse_m", "improvement_pct", "final_drift_m"]  # [-] headline metrics printed in the console summary
