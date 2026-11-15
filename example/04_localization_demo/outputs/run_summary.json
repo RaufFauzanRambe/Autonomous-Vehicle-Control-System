@@ -1,0 +1,8 @@
+{
+  "n_samples": 60,
+  "gps_rmse_m": 1.9243856426976043,
+  "filtered_gps_rmse_m": 1.4255397636252984,
+  "fused_rmse_m": 0.535689701387826,
+  "improvement_pct": 72.1630795043297,
+  "final_drift_m": 0.7950547801504411
+}
