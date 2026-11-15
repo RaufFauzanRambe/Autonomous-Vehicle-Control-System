@@ -1,0 +1,43 @@
+{
+  "scenarios": [
+    {
+      "name": "urban",
+      "n_ticks": 156,
+      "duration_s": 15.59999999999996,
+      "distance_m": 175.13811361980885,
+      "mean_speed_mps": 11.226801923076923,
+      "final_position_xy": [
+        175.12673498832845,
+        0.07120764135705207
+      ],
+      "detections_total": 312,
+      "goal_reached": true
+    },
+    {
+      "name": "highway",
+      "n_ticks": 200,
+      "duration_s": 20.000000000000014,
+      "distance_m": 240.7037797670578,
+      "mean_speed_mps": 12.0351845,
+      "final_position_xy": [
+        240.70357515953097,
+        0.03348294215281719
+      ],
+      "detections_total": 400,
+      "goal_reached": false
+    },
+    {
+      "name": "parking",
+      "n_ticks": 39,
+      "duration_s": 3.900000000000002,
+      "distance_m": 10.191507867544471,
+      "mean_speed_mps": 2.6132000000000004,
+      "final_position_xy": [
+        10.190732154277795,
+        -0.04599653591084645
+      ],
+      "detections_total": 78,
+      "goal_reached": true
+    }
+  ]
+}
