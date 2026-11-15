@@ -1,0 +1,23 @@
+{
+  "map_name": "straight_avenue",
+  "units": "m",
+  "nodes": [
+    {"id": "n0", "x": 0.0, "y": 0.0},
+    {"id": "n1", "x": 50.0, "y": 0.0},
+    {"id": "n2", "x": 100.0, "y": 0.0},
+    {"id": "n3", "x": 150.0, "y": 10.0},
+    {"id": "n4", "x": 200.0, "y": 10.0},
+    {"id": "n5", "x": 250.0, "y": 0.0},
+    {"id": "n6", "x": 300.0, "y": 0.0},
+    {"id": "n7", "x": 350.0, "y": 0.0}
+  ],
+  "links": [
+    {"id": "e0", "from_id": "n0", "to_id": "n1", "speed_limit_mps": 15.0, "lanes": 2},
+    {"id": "e1", "from_id": "n1", "to_id": "n2", "speed_limit_mps": 15.0, "lanes": 2},
+    {"id": "e2", "from_id": "n2", "to_id": "n3", "speed_limit_mps": 10.0, "lanes": 1},
+    {"id": "e3", "from_id": "n3", "to_id": "n4", "speed_limit_mps": 10.0, "lanes": 1},
+    {"id": "e4", "from_id": "n4", "to_id": "n5", "speed_limit_mps": 15.0, "lanes": 2},
+    {"id": "e5", "from_id": "n5", "to_id": "n6", "speed_limit_mps": 15.0, "lanes": 2},
+    {"id": "e6", "from_id": "n6", "to_id": "n7", "speed_limit_mps": 15.0, "lanes": 2}
+  ]
+}

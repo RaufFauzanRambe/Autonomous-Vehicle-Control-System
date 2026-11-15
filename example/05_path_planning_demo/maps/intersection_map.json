@@ -1,0 +1,17 @@
+{
+  "map_name": "four_way_intersection",
+  "units": "m",
+  "nodes": [
+    {"id": "n_center", "x": 0.0, "y": 0.0},
+    {"id": "n_north", "x": 0.0, "y": 100.0},
+    {"id": "n_south", "x": 0.0, "y": -100.0},
+    {"id": "n_east", "x": 100.0, "y": 0.0},
+    {"id": "n_west", "x": -100.0, "y": 0.0}
+  ],
+  "links": [
+    {"id": "link_n", "from_id": "n_center", "to_id": "n_north", "speed_limit_mps": 10.0, "lanes": 1},
+    {"id": "link_s", "from_id": "n_south", "to_id": "n_center", "speed_limit_mps": 10.0, "lanes": 1},
+    {"id": "link_e", "from_id": "n_center", "to_id": "n_east", "speed_limit_mps": 10.0, "lanes": 1},
+    {"id": "link_w", "from_id": "n_west", "to_id": "n_center", "speed_limit_mps": 10.0, "lanes": 1}
+  ]
+}
