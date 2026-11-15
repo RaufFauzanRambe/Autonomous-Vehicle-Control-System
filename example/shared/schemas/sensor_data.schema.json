@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sensor_data.schema.json",
+  "title": "SensorReading",
+  "description": "Envelope for one sensor reading, as produced by 02_sensor_simulation/sensors/*. Each sensor populates 'data' with its own fields documented in documentation/dataset_description.md.",
+  "type": "object",
+  "required": ["sensor_type", "timestamp", "frame_id", "data"],
+  "properties": {
+    "sensor_type": {
+      "type": "string",
+      "enum": ["camera", "lidar", "radar", "gps", "imu"],
+      "description": "Sensor family identifier."
+    },
+    "timestamp": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Acquisition time in seconds [s]."
+    },
+    "frame_id": {
+      "type": "string",
+      "description": "Coordinate frame or device identifier, e.g. 'camera_front', 'lidar_top'."
+    },
+    "data": {
+      "type": "object",
+      "description": "Sensor-specific payload (detections, point clouds, ranges, noise-corrupted signals, ...)."
+    }
+  },
+  "additionalProperties": false
+}

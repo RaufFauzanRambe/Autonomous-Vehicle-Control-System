@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "vehicle_state.schema.json",
+  "title": "VehicleState",
+  "description": "Kinematic 2-D vehicle state in a flat world frame, as produced by 01_basic_simulation/vehicle/vehicle_state.py.",
+  "type": "object",
+  "required": ["timestamp", "x", "y", "yaw", "speed"],
+  "properties": {
+    "timestamp": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Simulation time in seconds [s]."
+    },
+    "x": {
+      "type": "number",
+      "description": "Longitudinal position in the world frame [m]."
+    },
+    "y": {
+      "type": "number",
+      "description": "Lateral position in the world frame [m]."
+    },
+    "yaw": {
+      "type": "number",
+      "description": "Heading angle [rad], counter-clockwise positive, 0 rad aligned with the +x axis."
+    },
+    "speed": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Body-frame longitudinal velocity [m/s]."
+    },
+    "acceleration": {
+      "type": "number",
+      "description": "Body-frame longitudinal acceleration [m/s^2]."
+    },
+    "steering_angle": {
+      "type": "number",
+      "description": "Front wheel steering angle [rad], positive = left turn."
+    }
+  },
+  "additionalProperties": false
+}
