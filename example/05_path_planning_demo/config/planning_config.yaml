@@ -1,0 +1,16 @@
+# Relative paths are resolved against the module directory (05_path_planning_demo/).
+planning:
+  algorithm: "a_star"          # [-] graph search algorithm
+  maps:
+    - map_file: "maps/simple_road_map.json"
+      start_node: "n0"
+      goal_node: "n7"
+    - map_file: "maps/intersection_map.json"
+      start_node: "n_south"
+      goal_node: "n_east"
+vehicle:
+  max_speed_mps: 15.0          # [m/s] used for travel-time estimates
+  waypoint_spacing_m: 5.0      # [m] resampling distance, typical 2-10
+visualization:
+  show_nodes: true             # [-] draw node markers and labels
+  node_label_size: 6           # [pt] label font size
