@@ -1,0 +1,41 @@
+{
+  "description": "Rule-based decision benchmark scenarios for the 07_ai_decision_demo module.",
+  "scenarios": [
+    {
+      "id": "free_flow_cruise",
+      "name": "Free-flow cruise",
+      "description": "Clear road, no actors, no signals.",
+      "ego_state": {"x": 0.0, "y": 0.0, "yaw": 0.0, "speed": 12.0},
+      "actors": [],
+      "road_features": [],
+      "expected_decision": "cruise"
+    },
+    {
+      "id": "red_light_stop",
+      "name": "Traffic light red ahead",
+      "description": "Traffic light 15 m ahead showing red.",
+      "ego_state": {"x": 0.0, "y": 0.0, "yaw": 0.0, "speed": 10.0},
+      "actors": [],
+      "road_features": [{"type": "traffic_light", "distance_m": 15.0, "state": "red"}],
+      "expected_decision": "stop"
+    },
+    {
+      "id": "pedestrian_crossing",
+      "name": "Pedestrian at crossing",
+      "description": "Occupied pedestrian crossing 10 m ahead with a pedestrian on it.",
+      "ego_state": {"x": 0.0, "y": 0.0, "yaw": 0.0, "speed": 8.0},
+      "actors": [{"id": "ped_1", "type": "pedestrian", "x": 10.0, "y": 1.0, "speed": 1.2, "heading": 1.57}],
+      "road_features": [{"type": "pedestrian_crossing", "distance_m": 10.0, "state": "occupied"}],
+      "expected_decision": "stop"
+    },
+    {
+      "id": "slow_lead_vehicle",
+      "name": "Slow lead vehicle",
+      "description": "Lead vehicle 20 m ahead moving at 6 m/s.",
+      "ego_state": {"x": 0.0, "y": 0.0, "yaw": 0.0, "speed": 12.0},
+      "actors": [{"id": "veh_1", "type": "vehicle", "x": 20.0, "y": 0.0, "speed": 6.0, "heading": 0.0}],
+      "road_features": [],
+      "expected_decision": "follow"
+    }
+  ]
+}
