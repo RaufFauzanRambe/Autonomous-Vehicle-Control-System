@@ -1,0 +1,18 @@
+# Relative paths are resolved against the module directory (08_full_system_demo/).
+system:
+  tick_rate_hz: 10.0        # [Hz] pipeline tick rate
+  duration_s: 20.0          # [s] max simulated time per scenario
+modules:
+  perception:
+    max_range_m: 120.0      # [m] detection range
+    n_static_actors: 2      # [-] synthetic actors injected ahead
+  localization:
+    gps_noise_std_m: 1.0    # [m] position noise standard deviation
+  planning:
+    target_speed_mps: 12.0  # [m/s] fallback cruise target
+    steering_gain: 0.8      # [-] heading error -> steering
+logging:
+  level: "INFO"
+  directory: "logs"         # module-relative folder
+scenarios:
+  files: ["urban_environment.yaml", "highway_environment.yaml", "parking_environment.yaml"]
