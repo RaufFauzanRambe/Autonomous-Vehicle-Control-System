@@ -1,0 +1,10 @@
+# Relative paths are resolved against the module directory (07_ai_decision_demo/).
+rules:
+  stop_distance_m: 20.0        # [m] stop-rule activation distance, typical 10-40
+  follow_time_s: 2.0           # [s] desired time headway, typical 1.5-3.0
+  brake_deceleration_mpss: 3.0 # [m/s^2] comfortable deceleration
+  cruise_speed_mps: 14.0       # [m/s] default cruise target
+thresholds:
+  ttc_stop_s: 4.0              # [s] time-to-collision below which braking is forced
+evaluation:
+  require_reason_strings: true # [-] every decision must carry a non-empty reason
