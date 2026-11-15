@@ -1,0 +1,8 @@
+# Scenario definition for the 08_full_system_demo pipeline.
+# Relative paths in configs are resolved against the module directory (08_full_system_demo/).
+name: "highway"              # [-] scenario identifier used for log and result file names
+speed_limit_mps: 30.0        # [m/s] highway speed limit, typical 25-35
+traffic_density: "low"       # [-] label consumed by synthetic perception, typical none/low/medium/high
+start: {x: 0.0, y: 0.0, yaw: 0.0, speed: 20.0}   # [m], [m], [rad], [m/s] initial ego pose and speed
+goal: {x: 500.0, y: 0.0}     # [m] target position, typical 50-500 m ahead
+weather: {condition: "clear", visibility_m: 400.0}  # [-] condition label, [m] visibility, typical 50-1000
