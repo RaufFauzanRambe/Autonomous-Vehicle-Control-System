@@ -1,0 +1,14 @@
+# Relative paths are resolved against the module directory (06_motion_control_simulation/).
+control:
+  pid_speed:                    # longitudinal speed PID gains
+    kp: 1.2                     # [-] typical 0.5-2.0
+    ki: 0.15                    # [-] typical 0.0-0.5
+    kd: 0.05                    # [-] typical 0.0-0.2
+    output_limits: [-1.0, 1.0]  # [-] normalized throttle
+  steering_gain: 0.8            # [-] heading error -> steering, typical 0.3-1.5
+  lookahead_m: 8.0              # [m] pure-pursuit lookahead, typical 4-15
+simulation:
+  dt_s: 0.05                    # [s] integration step
+scenarios:
+  directory: "scenarios"        # module-relative folder
+  files: ["straight_road.yaml", "curved_road.yaml", "parking_scenario.yaml"]
