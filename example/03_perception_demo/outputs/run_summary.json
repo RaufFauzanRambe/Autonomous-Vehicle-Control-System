@@ -1,0 +1,11 @@
+{
+  "image_size_px": [
+    640,
+    480
+  ],
+  "n_detections": 2,
+  "left_lane_found": true,
+  "right_lane_found": true,
+  "sign_class": "stop_sign",
+  "sign_confidence": 0.99
+}
