@@ -1,0 +1,28 @@
+{
+  "scenarios": [
+    {
+      "scenario": "straight_road",
+      "duration_s": 27.1,
+      "distance_m": 300.185,
+      "speed_rmse_mps": 0.1074,
+      "max_cross_track_error_m": 0.4853,
+      "final_cross_track_error_m": 0.4853
+    },
+    {
+      "scenario": "curved_road",
+      "duration_s": 25.1,
+      "distance_m": 250.01,
+      "speed_rmse_mps": 0.0761,
+      "max_cross_track_error_m": 0.2282,
+      "final_cross_track_error_m": 0.2282
+    },
+    {
+      "scenario": "parking",
+      "duration_s": 13.55,
+      "distance_m": 19.997,
+      "speed_rmse_mps": 0.0194,
+      "max_cross_track_error_m": 0.0346,
+      "final_cross_track_error_m": 0.0346
+    }
+  ]
+}
