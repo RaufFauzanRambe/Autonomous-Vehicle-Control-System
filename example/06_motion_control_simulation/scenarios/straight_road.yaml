@@ -1,0 +1,8 @@
+# Scenario definition for the straight-road speed-tracking case.
+# Loaded by 06_motion_control_simulation/main.py; the scenario file lives in
+# the module-relative folder configured under scenarios.directory.
+name: "straight_road"                                    # [-] scenario identifier, used for output file names
+duration_s: 30.0                                         # [s] maximum simulated wall-clock duration, typical 10-60
+initial_state: {x: 0.0, y: 0.0, yaw: 0.0, speed: 0.0}    # [m], [m], [rad], [m/s] vehicle pose and speed at t=0
+path: {type: "straight", heading_rad: 0.0, length_m: 300.0}  # [-], [rad], [m] reference geometry
+target_speed_mps: 12.0                                   # [m/s] speed PID setpoint, typical 5-25

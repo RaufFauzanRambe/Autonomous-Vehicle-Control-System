@@ -1,0 +1,8 @@
+# Scenario definition for the constant-curvature road-following case.
+# Loaded by 06_motion_control_simulation/main.py; the scenario file lives in
+# the module-relative folder configured under scenarios.directory.
+name: "curved_road"                                      # [-] scenario identifier, used for output file names
+duration_s: 40.0                                         # [s] maximum simulated wall-clock duration, typical 10-60
+initial_state: {x: 0.0, y: 0.0, yaw: 0.0, speed: 8.0}    # [m], [m], [rad], [m/s] vehicle pose and speed at t=0
+path: {type: "constant_curvature", curvature_1_per_m: 0.01, length_m: 250.0}  # [1/m], [m] reference geometry
+target_speed_mps: 10.0                                   # [m/s] speed PID setpoint, typical 5-25
